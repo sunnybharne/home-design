@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f3ed" />
+  <meta name="description" content="Explore the A1 apartment floor plan at Helsingin Saarenhelmi. A personal, source-referenced home design study." />
+  <title>A1 Floor Plan · Home Design</title>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="%BASE_URL%" aria-label="Home Design"><span class="brand-symbol">⌂</span><span>HOME DESIGN<small>Your home, thoughtfully imagined.</small></span></a>
+    <div class="breadcrumb">SAARENHELMI <span>/</span> <strong>APARTMENT A1</strong></div>
+    <button class="outline-button" id="sources-button">About this plan ↗</button>
+  </header>
+  <main>
+    <aside class="sidebar">
+      <div class="eyebrow"><span class="dot"></span> HELSINGIN SAARENHELMI</div>
+      <h1>A closer look<br>at <em>your home.</em></h1>
+      <p class="intro">Apartment A1. A little space to plan<br>the way you want to live.</p>
+      <div class="apartment-card"><span>A1</span><div><strong>Tihtaalinkatu 5</strong><small>Nihti, Helsinki · Floor 1</small></div></div>
+      <div class="facts"><div><strong>71 <small>m²</small></strong><span>apartment area</span></div><div><strong>2</strong><span>bedrooms</span></div><div><strong>3H + KT</strong><span>official layout</span></div></div>
+      <section class="room-section" aria-labelledby="rooms-heading"><div class="section-heading"><h2 id="rooms-heading">Your spaces</h2><button class="text-button" id="clear-room">Show all</button></div><div class="room-list" id="room-list"></div></section>
+      <section class="room-detail" aria-live="polite"><div class="eyebrow" id="detail-code">THE APARTMENT</div><h3 id="detail-title">Room to make it yours.</h3><p id="detail-description">Two bedrooms, an open living / dining / kitchen area, a bathroom, a walk-in wardrobe and a private terrace.</p></section>
+      <a id="official-plan" class="text-link" target="_blank" rel="noopener noreferrer">Open the published A1 plan · p.25 ↗</a>
+      <p class="accuracy-note">Redrawn from the official brochure. Geometry and furniture are indicative, not measured. The published apartment area is 71 m²; terrace area is not specified here.</p>
+    </aside>
+    <section class="workspace" aria-label="A1 apartment floor plan">
+      <div class="workspace-top"><div><span class="eyebrow">APARTMENT STUDY / A1</span><h2>Every room, in one view.</h2></div><span class="status-badge"><span class="dot"></span> Top-down floor plan</span></div>
+      <div id="plan-canvas" aria-label="Interactive floor plan"><div id="plan-status" role="status">Preparing your floor plan…</div></div>
+      <div class="display-tools"><label><input id="furniture-toggle" type="checkbox" checked /> Furniture</label><label><input id="labels-toggle" type="checkbox" checked /> Room labels</label></div>
+      <div class="zoom-tools" aria-label="Plan zoom"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button><span></span><button id="reset-button" aria-label="Fit floor plan to view">↺</button></div>
+      <div class="plan-key"><span><i class="key-wall"></i> Walls</span><span><i class="key-window"></i> Windows</span><span><i class="key-terrace"></i> Terrace</span></div>
+      <div class="workspace-bottom"><span id="gesture-help">Drag to pan · scroll to zoom · select a room</span><button id="save-button">↓ Save plan</button></div>
+    </section>
+  </main>
+  <footer><span>A1 <span class="footer-divider">/</span> HOME DESIGN JOURNAL</span><span>Personal study · not an official Fira or Kilo Invest site</span></footer>
+  <dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-heading"><span class="eyebrow">PLAN NOTES</span><button id="close-sources" aria-label="Close plan notes">✕</button></div><h2 id="sources-title">Your apartment.<br><em>The published reference.</em></h2><p>This view focuses only on A1 at Helsingin Saarenhelmi, Tihtaalinkatu 5, Helsinki.</p><ul><li><strong>A1 · floor 1 · 71 m² · 3H + KT</strong><p>The official plan shows two bedrooms (MH), living (OH), dining (RT), an open kitchen (KT), bathroom (KPH), walk-in wardrobe (VH), entrance (ET) and a terrace.</p></li><li><a id="brochure-link" target="_blank" rel="noopener noreferrer">Official sales brochure · A1 on page 25 ↗</a><p>Brochure dated 22 December 2025. The room arrangement, entrance and terrace are interpreted from this page. If your PDF viewer does not jump to the page, open page 25 manually.</p></li><li><a id="property-link" target="_blank" rel="noopener noreferrer">Official property website ↗</a><p>Fira Rakennus Oy is the contractor; Kilo Invest Oy is the developer.</p></li></ul><div class="source-warning">This is a simplified redraw, not a dimensioned construction drawing. Wall thickness, openings, furniture and room proportions are approximate. The 71 m² figure is sourced, not calculated from this model. Bedroom numbers are our labels. Furniture is illustrative, not a supplied furnishing package. Verify dimensions against approved drawings before buying furniture or making changes.</div><p class="rights-note">The original PDF and renderings are linked, not stored or republished in this repository.</p></dialog>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
