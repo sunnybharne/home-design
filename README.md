@@ -1,6 +1,6 @@
 # Home Design · A1
 
-An interactive top-down floor plan for apartment A1 at Helsingin Saarenhelmi, Helsinki. Built with Three.js.
+An A1 floor plan and Scandinavian interior study for Helsingin Saarenhelmi, Helsinki. Built with Three.js.
 
 ## Run locally
 
@@ -21,7 +21,12 @@ npm run build
 ## Features
 
 - A1 only: no building or neighbourhood views.
-- Play opens a full-screen first-person walkthrough with an entry animation.
+- Walk inside opens a full-screen first-person interior.
+- Soft Nordic furniture inspired by IKEA ranges, with Finland shopping links.
+- Textured wood and linen, rounded furniture, curtains, reflections and contact shadows.
+- Saved living, bedroom, studio and YouTube-background views.
+- Daylight, evening and recording light moods; a 16:9 composition guide.
+- Save a watermarked room view. Smooth rendering mode reduces GPU work.
 - Walk through the rooms and terrace; walls, windows and furniture block movement.
 - Keyboard, mouse and on-screen movement controls; drag-to-look works without mouse capture.
 - Back to plan restores the top-down view.
@@ -39,7 +44,9 @@ Walkthrough controls:
 - Drag the view: look around. Q/E: turn with the keyboard.
 - Optional “Use mouse look”: capture the mouse. Escape returns to the plan.
 - Phone/tablet: hold the direction buttons while dragging the view to look.
-- “Return to entrance”: reset your position.
+- “Entrance”: reset your position.
+- Room view / Light mood: change the composition and lighting.
+- Rendering: choose Detail or Smooth. Touch devices start in Smooth mode.
 
 Reduced-motion settings skip the entry animation. Movement stops when the tab loses focus. The Furniture toggle applies to the walkthrough when you enter.
 
@@ -52,6 +59,12 @@ A1 is listed as 71 m², 3H + KT, on floor 1. It has two bedrooms and a private t
 Geometry is scaled from the supplied 1:100 marketing plan. Fixed units use stated sizes where available; their locations and some dimensions remain scaled. Heights are provisional: 3395 mm main elevation context, 2800 mm hall/wardrobe and 2350 mm bathroom. Selected finishes now follow the apartment card, but screen colours and product shapes remain approximate.
 
 Read the [measurement audit](docs/measurement-audit.md) and complete the blank [site-measurement checklist](docs/site-measurements.csv) before furniture purchases.
+
+## IKEA and visual realism
+
+Read the [Nordic concept](docs/nordic-concept.md). The furniture models and textures are original approximations, not official IKEA assets or photographs. Product dimensions are nominal references; current variants and Vantaa/Espoo stock were not verified. The IKEA links let you check them.
+
+The studio is a guest-room proposal. Recording views are not calibrated camera, daylight or acoustic simulations. The guest bed is shown closed.
 
 ## Owner documents
 
@@ -69,7 +82,11 @@ Pushes to `main` run tests, build the app and deploy through `.github/workflows/
 
 - `src/property.js`: apartment facts and indicative plan geometry.
 - `src/main.js`: Three.js floor-plan renderer and controls.
-- `src/walkthrough.js`: first-person scene, animation and controls.
+- `src/walkthrough.js`: first-person controls, post-processing, light moods and export.
+- `src/interior-scene.js`: architecture, fixed units, reflections and lighting.
+- `src/styled-furniture.js`, `src/geometry.js`: original furniture and styling geometry.
+- `src/materials.js`: original procedural materials.
+- `src/furnishing-plan.js`: IKEA references, shared furniture layout and camera views.
 - `src/navigation.js`: collision checks.
 - `src/interior.js`: shared fixed-unit footprints and provenance.
 - `src/specification.js`: source register, stated dimensions, finishes and accuracy limits.

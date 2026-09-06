@@ -65,7 +65,7 @@ test('fixed units share one collision source and cannot vanish with furniture id
     assert.ok(item.source && item.sizeNote);
     assert.equal(canStand(x + w / 2, z + d / 2, false), false, item.id);
   }
-  for (const file of ['main', 'walkthrough']) {
+  for (const file of ['main', 'interior-scene']) {
     const js = readFileSync(new URL(`../src/${file}.js`, import.meta.url), 'utf8');
     assert.match(js, /for \(const item of fixedItems\)/);
   }

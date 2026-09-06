@@ -17,9 +17,17 @@
     <aside class="sidebar">
       <div class="eyebrow"><span class="dot"></span> HELSINGIN SAARENHELMI</div>
       <h1>A closer look<br>at <em>your home.</em></h1>
-      <p class="intro">Apartment A1. A little space to plan<br>the way you want to live.</p>
+      <p class="intro">Warm oak. Soft linen. Space to live,<br>and a calm background for your videos.</p>
       <div class="apartment-card"><span>A1</span><div><strong>Tihtaalinkatu 5</strong><small>Nihti, Helsinki · Floor 1</small></div></div>
       <div class="facts"><div><strong>71 <small>m²</small></strong><span>apartment area</span></div><div><strong>2</strong><span>bedrooms</span></div><div><strong>3H + KT</strong><span>official layout</span></div></div>
+      <section class="nordic-concept" aria-label="Scandinavian furnishing concept">
+        <span class="eyebrow">SOFT NORDIC / IKEA FINLAND</span>
+        <div id="concept-palette" aria-label="Linen, oak, chalk, clay and charcoal palette"></div>
+        <button id="styled-view-button" class="concept-primary">Explore the styled living room ↗</button>
+        <button id="studio-view-button">Preview the YouTube background ↗</button>
+        <button id="products-button">See the IKEA furniture list ↗</button>
+        <p>Original models inspired by IKEA ranges. Check the current variants and Vantaa / Espoo stock.</p>
+      </section>
       <section class="room-section" aria-labelledby="rooms-heading"><div class="section-heading"><h2 id="rooms-heading">Your spaces</h2><button class="text-button" id="clear-room">Show all</button></div><div class="room-list" id="room-list"></div></section>
       <section class="room-detail" aria-live="polite"><div class="eyebrow" id="detail-code">THE APARTMENT</div><h3 id="detail-title">Room to make it yours.</h3><p id="detail-description">Two bedrooms, an open living / dining / kitchen area, a bathroom, a walk-in wardrobe and a private terrace.</p></section>
       <a id="official-plan" class="text-link" target="_blank" rel="noopener noreferrer">Open the published A1 plan · p.25 ↗</a>
@@ -29,13 +37,19 @@
     <section class="workspace" aria-label="A1 apartment floor plan">
       <div class="workspace-top"><div><span class="eyebrow">APARTMENT STUDY / A1</span><h2>Every room, in one view.</h2></div><span class="status-badge"><span class="dot"></span> Drawing-scale · not as-built</span></div>
       <div id="plan-canvas" aria-label="Interactive floor plan"><div id="plan-status" role="status">Preparing your floor plan…</div></div>
-      <div class="display-tools"><button id="play-button" class="play-button" aria-expanded="false" aria-controls="walk-overlay">▶ Play walkthrough</button><label><input id="furniture-toggle" type="checkbox" checked /> Furniture ideas</label><label><input id="labels-toggle" type="checkbox" checked /> Room labels</label></div>
+      <div class="display-tools"><button id="play-button" class="play-button" aria-expanded="false" aria-controls="walk-overlay">▶ Walk inside</button><label><input id="furniture-toggle" type="checkbox" checked /> Furniture ideas</label><label><input id="labels-toggle" type="checkbox" checked /> Room labels</label></div>
       <div id="walk-overlay" hidden>
         <div class="walk-top"><div><span class="eyebrow">INSIDE A1 · NOT FOR FURNITURE ORDERS</span><h2 id="walk-room" aria-live="polite">Entrance / hallway</h2></div><button id="exit-walk-button">✕ Back to plan</button></div>
-        <div class="walk-crosshair" aria-hidden="true">+</div>
-        <div class="walk-actions"><button id="mouse-look-button">Use mouse look</button><button id="walk-reset-button">↺ Return to entrance</button></div>
+        <div class="walk-toolbar">
+          <label>Room view<select id="walk-view"><option value="entrance">Entrance</option><option value="living">Living & dining</option><option value="bedroom">Bedroom</option><option value="studio">Studio / guest room</option><option value="video">YouTube background</option><option value="free">Free walk</option></select></label>
+          <label>Light mood<select id="walk-light"><option value="day">Soft daylight</option><option value="evening">Warm evening</option><option value="recording">Recording lights</option></select></label>
+          <label>Rendering<select id="walk-quality"><option value="detail">Detail · contact shadows</option><option value="smooth">Smooth · lighter on GPU</option></select></label>
+        </div>
+        <div id="record-frame" role="img" aria-label="16 by 9 filming composition guide" hidden><span>16:9 · background study</span></div>
+        <div class="walk-crosshair" aria-hidden="true">·</div>
+        <div class="walk-actions"><button id="save-view-button">↓ Save room view</button><button id="walk-products-button">IKEA furniture ↗</button><button id="mouse-look-button">Use mouse look</button><button id="walk-reset-button">↺ Entrance</button></div>
         <div class="walk-pad" role="group" aria-label="Walk controls. Hold a direction to move; drag the view to look around."><button id="move-forward" data-move="forward" aria-label="Walk forward">↑</button><button id="move-left" data-move="left" aria-label="Step left">←</button><button id="move-back" data-move="back" aria-label="Walk backward">↓</button><button id="move-right" data-move="right" aria-label="Step right">→</button></div>
-        <div class="walk-footer"><p id="walk-hint">WASD / arrows to move · drag to look · Q/E to turn · Esc to exit</p><span>Drag to look. Selected finishes, drawing-scale geometry, provisional heights. Confirm dimensions on site.</span></div>
+        <div class="walk-footer"><p id="walk-hint">WASD / arrows to move · drag to look · Q/E to turn · Esc to exit</p><span>Design concept, not a photograph. Unofficial IKEA approximations. Lighting, colours and room dimensions need real-world checks.</span></div>
       </div>
       <div class="zoom-tools" aria-label="Plan zoom"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button><span></span><button id="reset-button" aria-label="Fit floor plan to view">↺</button></div>
       <div class="plan-key"><span><i class="key-wall"></i> Walls</span><span><i class="key-window"></i> Windows</span><span><i class="key-terrace"></i> Terrace</span></div>
@@ -57,6 +71,16 @@
     <p><a id="brochure-link" target="_blank" rel="noopener noreferrer">Public sales brochure · A1 on p.25 ↗</a></p>
     <p><a id="property-link" target="_blank" rel="noopener noreferrer">Official property website ↗</a></p>
     <p class="rights-note">Private originals, review images, personal details and prices are not published. The model is for layout discussion, not fabrication, installation or daylight analysis. Floor levels and delivery clearances are not validated.</p>
+  </dialog>
+  <dialog id="products-dialog" aria-labelledby="products-title">
+    <div class="dialog-heading"><span class="eyebrow">THE FURNISHING EDIT</span><button id="close-products" aria-label="Close furniture list">✕</button></div>
+    <h2 id="products-title">Soft Nordic.<br><em>Made for everyday life.</em></h2>
+    <p>Light wood, tactile fabrics, simple shapes and a little clay colour. A family-home concept inspired by IKEA display rooms, not a furniture order.</p>
+    <div class="source-warning"><strong id="stock-note"></strong><p id="product-model-note"></p></div>
+    <p><a href="https://www.ikea.com/fi/fi/stores/" target="_blank" rel="noopener noreferrer">Find IKEA Vantaa / Espoo store details ↗</a></p>
+    <div id="product-list"></div>
+    <section class="filming-notes"><h3>Your YouTube corner</h3><p>The lower bedroom is proposed as a studio / guest room: compact desk, closed daybed and an oak bookcase backdrop. This is a flexible room-use suggestion.</p><ul><li>Window light from the side, not directly behind your face. Use linen curtains to soften it.</li><li>Warm background light, books, ceramics and simple art. Keep the host away from the back wall where space allows.</li><li>The rug and curtains may soften reflections. They do not soundproof the room; test traffic noise, echo and your microphone.</li><li>The 16:9 view is a composition guide, not a validated camera/lens or skin-tone test. Recording lights are generic equipment suggestions.</li><li>Check drawer travel, pulled-out chairs, the open daybed and your delivery route on site.</li></ul></section>
+    <p class="rights-note">Not affiliated with IKEA. No IKEA photos or 3D files are republished. Furniture forms, accessories and textures are original approximations. The fitted kitchen and bathroom still follow the supplied apartment selections.</p>
   </dialog>
   <script type="module" src="/src/main.js"></script>
 </body>

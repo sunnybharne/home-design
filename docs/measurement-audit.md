@@ -101,7 +101,7 @@ The app now reflects S12 rather than the old invented finish palette:
 - Beige bathroom tiles, white basin/mirror units, black shower fittings and alder ceiling.
 - Anthracite terrace mat.
 
-Colour matching, reflections, grain and product shapes remain illustrative. Loose furniture is a design idea, not a selected furnishing package. Some small hardware, exact shower-screen geometry and appliance details are not modeled.
+Colour matching, reflections, grain and product shapes remain illustrative. Loose furniture now follows a proposed [Nordic / IKEA concept](nordic-concept.md), not an owner-approved furnishing package. Its catalogue references are separate from this document audit. Some small hardware, exact shower-screen geometry and appliance details are not modeled.
 
 ## Needed before furniture orders
 

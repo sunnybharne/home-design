@@ -6,6 +6,8 @@ import { createWalkthrough } from './walkthrough.js';
 import { fixedItems } from './interior.js';
 import { audit, sources, documentedDimensions, finishes, confirmationNeeded, ceiling } from './specification.js';
 import './audit.css';
+import './studio.css';
+import { shopping, concept, furnishingLayout, productFor, stylingRug } from './furnishing-plan.js';
 
 const $ = (id) => document.getElementById(id);
 const dialog = $('sources-dialog');
@@ -16,6 +18,27 @@ $('close-sources').onclick = () => dialog.close();
 $('official-plan').href = property.brochure;
 $('brochure-link').href = property.brochure;
 $('property-link').href = property.website;
+const productsDialog = $('products-dialog');
+const showProducts = () => { if (walkthrough?.active) exitWalkthrough(); productsDialog.showModal(); };
+$('products-button').onclick = showProducts; $('walk-products-button').onclick = showProducts;
+$('close-products').onclick = () => productsDialog.close();
+$('stock-note').textContent = concept.stock;
+$('product-model-note').textContent = concept.dimensions;
+for (const product of shopping) {
+  const card = document.createElement('article'); card.className = 'product-card';
+  const name = document.createElement('h3'); name.textContent = product.name;
+  const type = document.createElement('p'); type.textContent = `${product.type} · ${product.room}`;
+  const finish = document.createElement('p'); finish.textContent = product.finish;
+  const size = document.createElement('small'); size.textContent = product.size ? `${product.size.map(v => Math.round(v * 1000)).join(' × ')} mm · nominal W × D × H` : 'Confirm size and installation details on site';
+  const note = document.createElement('p'); note.textContent = product.note;
+  const link = document.createElement('a'); link.href = product.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Find this range at IKEA Finland ↗';
+  card.append(name, type, finish, size, note, link); $('product-list').append(card);
+}
+for (const color of concept.palette) { const swatch = document.createElement('i'); swatch.style.background = color; $('concept-palette').append(swatch); }
+productsDialog.addEventListener('click', (event) => {
+  const r = productsDialog.getBoundingClientRect();
+  if (event.target === productsDialog && (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom)) productsDialog.close();
+});
 $('audit-summary').textContent = `${audit.documents} documents / ${audit.pages} pages reviewed. No as-built survey supplied.`;
 $('ceiling-note').textContent = ceiling.status;
 for (const dimension of documentedDimensions) {
@@ -166,35 +189,28 @@ function addFixtures() {
   circle(tx + tw * 0.69, tz + td / 2, td / 2 - 0.02, '#f4f4ed', 0.16);
 }
 
-function bed(x, y, w, h, horizontal = false) {
-  rect(x - 0.07, y - 0.06, w + 0.14, h + 0.12, '#c6c5b0', 0.07, furniture);
-  rect(x, y, w, h, '#f8f5eb', 0.08, furniture, '#b3b6a1');
-  if (horizontal) {
-    rect(x + w - 0.43, y + 0.1, 0.3, h - 0.2, '#fffdf4', 0.11, furniture, '#d0d0bf');
-    rect(x + 0.14, y + 0.04, w - 0.77, h - 0.08, '#d2d7c1', 0.1, furniture);
-  } else {
-    rect(x + 0.1, y + 0.12, w / 2 - 0.15, 0.38, '#fffdf4', 0.11, furniture, '#d0d0bf');
-    rect(x + w / 2 + 0.05, y + 0.12, w / 2 - 0.15, 0.38, '#fffdf4', 0.11, furniture, '#d0d0bf');
-    rect(x + 0.04, y + 0.7, w - 0.08, h - 0.79, '#d2d7c1', 0.1, furniture);
-  }
-}
 function addFurniture() {
-  // Loose furniture is a design suggestion, not a fitted package or a measured fit.
-  bed(6.35, 0.63, 1.55, 2.02);
-  rect(5.87, 0.66, 0.36, 0.42, '#c8c3ab', 0.1, furniture);
-  bed(3.86, 9.09, 1.85, 0.92, true);
-  rect(3.61, 7.55, 1.34, 0.55, '#c9c5b1', 0.08, furniture, '#b1b49c');
-  circle(4.26, 8.31, 0.23, '#d3d6c2', 0.1, furniture);
-  // Dining table and four chairs.
-  circle(3.06, 4.65, 0.57, '#c8c4aa', 0.1, furniture);
-  for (const angle of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]) circle(3.06 + Math.cos(angle) * 0.91, 4.65 + Math.sin(angle) * 0.91, 0.23, '#e3e5d7', 0.09, furniture);
-  // Living-room rug, sofa and coffee table.
-  rect(6.15, 4.34, 2.02, 1.83, '#e4dfcf', 0.06, furniture);
-  rect(6.29, 5.42, 1.9, 0.74, '#c0cbb2', 0.1, furniture, '#a7b498');
-  rect(6.37, 5.44, 0.8, 0.52, '#d6deca', 0.11, furniture, '#bdc8ae');
-  rect(7.22, 5.44, 0.87, 0.52, '#d6deca', 0.11, furniture, '#bdc8ae');
-  circle(7.38, 4.84, 0.37, '#c3bca1', 0.12, furniture);
-  rect(6.44, 3.37, 1.58, 0.3, '#c8c1a7', 0.08, furniture);
+  const rug = stylingRug;
+  rect(rug.x-rug.width/2, rug.z-rug.depth/2, rug.width, rug.depth, '#e8e0d0', .035, furniture);
+  for (const item of furnishingLayout) {
+    const group = new THREE.Group(); group.position.set(item.x, -item.z, 0); group.rotation.z = item.rotation; furniture.add(group);
+    const [w, d] = productFor(item).size, wood = ['coffee', 'table', 'chair', 'console', 'bookcase'].includes(item.kind);
+    if (['coffee','side'].includes(item.kind)) circle(0, 0, w/2, item.kind === 'side' ? '#eee9de' : '#c9ae86', .1, group, '#a38d6e');
+    else rect(-w/2, -d/2, w, d, wood ? '#d6c2a0' : '#e5decf', .1, group, '#aea38e');
+    if (item.kind === 'sofa') {
+      for (const x of [-w/2+.12, w/2-.12]) rect(x-.12, -d/2, .24, d, '#c5bba8', .12, group);
+      rect(-w/2+.24, -d/2, w-.48, .20, '#c5bba8', .12, group);
+      line([[0,-d/2+.2],[0,d/2]], '#b4a992', .13, group);
+    }
+    if (['bed','daybed'].includes(item.kind)) {
+      rect(-w/2+.07, -d/2+.08, w-.14, d-.16, '#f6f2e8', .12, group);
+      const count=item.kind==='bed'?2:3;
+      for(let i=0;i<count;i++) rect(-w/2+.15+i*(w-.2)/count,-d/2+.13,(w-.35)/count,.30,'#e6dfd1',.13,group);
+      rect(-w/2+.08, d/2-.50, w-.16, .30, '#90957b', .14, group);
+    }
+    if(item.kind==='desk') rect(-.20,-.20,.48,.29,'#515951',.12,group);
+    if(item.kind==='chair') rect(-w/2,-d/2,w,.05,'#b79f7d',.12,group);
+  }
 }
 
 function addLabels() {
@@ -240,7 +256,7 @@ function draw() {
   if (!graphicsAvailable || frame || document.hidden || walkthrough?.active) return;
   frame = requestAnimationFrame(() => { frame = 0; if (!walkthrough?.active) renderer.render(scene, camera); });
 }
-function enterWalkthrough() {
+function enterWalkthrough(initialView = 'entrance') {
   if (!graphicsAvailable || walkthrough?.active) return;
   try {
     walkthrough ??= createWalkthrough({ renderer, onExit: exitWalkthrough, onRoom: (room) => {
@@ -253,7 +269,7 @@ function enterWalkthrough() {
     $('walk-overlay').hidden = false;
     $('play-button').setAttribute('aria-expanded', 'true');
     renderer.domElement.setAttribute('aria-label', 'A1 first-person walkthrough. WASD or arrows to move, drag to look, Q and E to turn, Escape to return to the floor plan.');
-    walkthrough.start($('furniture-toggle').checked);
+    walkthrough.start($('furniture-toggle').checked, initialView);
     const { width, height } = $('plan-canvas').getBoundingClientRect();
     if (height) walkthrough.resize(width, height);
   } catch (error) {
@@ -274,7 +290,9 @@ function exitWalkthrough() {
   $('play-button').focus({ preventScroll: true });
   draw();
 }
-$('play-button').onclick = enterWalkthrough;
+$('play-button').onclick = () => enterWalkthrough();
+$('styled-view-button').onclick = () => enterWalkthrough('living');
+$('studio-view-button').onclick = () => enterWalkthrough('video');
 $('exit-walk-button').onclick = exitWalkthrough;
 function fitPlan() {
   if (!camera) return;
@@ -360,7 +378,7 @@ function init() {
   $('plan-status').hidden = true;
 }
 function setGraphicsControls(enabled) {
-  for (const id of ['furniture-toggle', 'labels-toggle', 'zoom-in', 'zoom-out', 'reset-button', 'save-button', 'play-button']) $(id).disabled = !enabled;
+  for (const id of ['furniture-toggle', 'labels-toggle', 'zoom-in', 'zoom-out', 'reset-button', 'save-button', 'play-button', 'styled-view-button', 'studio-view-button']) $(id).disabled = !enabled;
 }
 $('furniture-toggle').onchange = (event) => { if (furniture) furniture.visible = event.target.checked; draw(); };
 $('labels-toggle').onchange = (event) => { if (labels) labels.visible = event.target.checked; draw(); };

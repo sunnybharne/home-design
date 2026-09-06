@@ -1,0 +1,62 @@
+/* Warm, neutral UI. The plan remains a diagram; Walk inside is the material study. */
+.nordic-concept { margin:0 0 24px; padding:16px; background:#ece6da; border:1px solid #ded5c5; border-radius:6px; }
+.nordic-concept .eyebrow { color:#81715a; font-size:8px; }
+#concept-palette { display:flex; gap:6px; margin:13px 0; }
+#concept-palette i { width:23px; height:23px; border-radius:50%; border:1px solid #0000000d; }
+.nordic-concept button { display:block; width:100%; text-align:left; font-size:10px; padding:10px 0; }
+.nordic-concept .concept-primary { background:#695d4b; color:#fff8ed; padding:12px; border-radius:4px; margin-bottom:5px; }
+.nordic-concept p { font-size:9px; line-height:1.7; color:#837765; margin:8px 0 0; }
+#products-dialog { width:min(920px,calc(100% - 30px)); overflow:auto; }
+#products-dialog h2 { margin-bottom:14px; }
+#product-list { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:22px; }
+.product-card { padding:18px; background:#fdfbf6; border:1px solid #ded7c9; border-radius:5px; }
+.product-card h3 { font:600 15px -apple-system,BlinkMacSystemFont,sans-serif; margin:0 0 9px; letter-spacing:.5px; }
+.product-card p { font-size:11px; line-height:1.6; margin:8px 0; }
+.product-card small { display:block; color:#8a7a64; font-size:9px; line-height:1.7; }
+.product-card a { display:inline-block; margin-top:8px; font-size:10px; line-height:1.7; text-underline-offset:4px; }
+.filming-notes { margin-top:24px; padding-top:12px; border-top:1px solid #ded7c9; }
+.filming-notes h3 { font:400 24px Georgia,serif; }
+.filming-notes li { font-size:12px; line-height:1.7; margin:10px 0; }
+.walk-top { background:linear-gradient(#201d19b8,transparent); z-index:3; }
+.walk-top .eyebrow { color:#e2d8c6; }
+.walk-toolbar { position:absolute; top:99px; left:25px; display:flex; gap:9px; pointer-events:auto; z-index:3; }
+.walk-toolbar label { display:flex; flex-direction:column; gap:6px; padding:10px 12px; background:#302b24da; border:1px solid #ffffff20; backdrop-filter:blur(10px); border-radius:5px; color:#d6cbbb; font-size:8px; letter-spacing:.6px; }
+.walk-toolbar select { background:transparent; color:#fcf6ec; border:0; font:11px -apple-system,BlinkMacSystemFont,sans-serif; padding:3px 20px 3px 0; max-width:210px; cursor:pointer; }
+.walk-toolbar option { background:#393329; color:#fcf6ec; }
+.walk-top button,.walk-actions button { background:#332d25de; color:#fff7e9; }
+.walk-actions,.walk-pad { z-index:3; }
+.walk-actions { max-width:410px; flex-wrap:wrap; justify-content:flex-end; }
+.walk-pad button { background:#eee7d9da; color:#675b49; }
+.walk-pad button.held { background:#c2ad8c; }
+.walk-footer { background:linear-gradient(transparent,#201d19db); z-index:2; }
+.walk-footer span { color:#d8cfc0; }
+#record-frame { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); aspect-ratio:16/9; border:1px solid #fffaf0d9; box-shadow:0 0 0 100vmax #16140f75; z-index:1; }
+#record-frame span { position:absolute; bottom:8px; left:12px; font-size:9px; letter-spacing:1.3px; text-shadow:0 1px 4px #000; }
+#record-frame::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent 33.2%,#ffffff20 33.3%,transparent 33.5%,transparent 66.5%,#ffffff20 66.6%,transparent 66.8%); }
+.walk-crosshair { z-index:2; font-size:16px; opacity:.65; }
+@media(min-width:721px) {
+  main { align-items:start; }
+  .workspace:not(.walking) { position:sticky; top:0; min-height:620px; height:calc(100dvh - 84px); }
+}
+@media(max-width:900px) {
+  #product-list { grid-template-columns:1fr 1fr; }
+  .walk-actions { bottom:215px; max-width:170px; }
+}
+@media(max-width:720px) {
+  .walk-toolbar { left:16px; right:16px; top:92px; gap:5px; }
+  .walk-toolbar label { padding:8px; min-width:0; flex:1; font-size:7px; }
+  .walk-toolbar select { font-size:10px; max-width:100%; padding-right:0; }
+  .walk-actions { bottom:120px; max-width:145px; gap:5px; }
+  .walk-actions button { padding:9px; font-size:9px; }
+  .nordic-concept button { font-size:12px; }
+  .nordic-concept p { font-size:11px; }
+}
+@media(max-width:480px) { #product-list { grid-template-columns:1fr; } }
+@media(max-height:560px) {
+  .walk-top { padding:12px 18px; }
+  .walk-top h2 { font-size:18px; margin:4px 0; }
+  .walk-toolbar { top:64px; left:18px; }
+  .walk-toolbar label { padding:6px 9px; }
+  .walk-actions,.walk-pad { bottom:73px; }
+  .walk-footer { padding-bottom:10px; }
+}

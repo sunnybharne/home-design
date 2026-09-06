@@ -1,4 +1,5 @@
 import { finishes } from './specification.js';
+import { furnitureFootprints } from './furnishing-plan.js';
 
 // Positions use S01 drawing-scale coordinates. A sourced SIZE does not verify its
 // position or the room clearance. box = [x, z, width along X, depth along Z, height, colour].
@@ -17,14 +18,5 @@ export const fixedItems = [
 ];
 export const fixtures = fixedItems.map((item) => item.box);
 
-// Loose furniture remains illustrative and must not be used as a fit guarantee.
-export const looseFurniture = [
-  [6.35, 0.63, 1.55, 2.02, 0.48, '#c0cbb0'],
-  [5.87, 0.66, 0.36, 0.42, 0.5, '#bcb398'],
-  [3.86, 9.09, 1.85, 0.92, 0.48, '#c0cbb0'],
-  [3.61, 7.55, 1.34, 0.55, 0.76, '#c6bca3'],
-  [6.29, 5.42, 1.9, 0.74, 0.74, '#a9b799'],
-  [6.44, 3.37, 1.58, 0.3, 0.52, '#bfb296'],
-  [2.55, 4.14, 1.02, 1.02, 0.75, '#c8b798'],
-  [7.06, 4.52, 0.64, 0.64, 0.42, '#c3b99f'],
-];
+// One layout for the floor plan, styled models and navigation.
+export const looseFurniture = furnitureFootprints;
