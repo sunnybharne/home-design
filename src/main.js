@@ -2,10 +2,11 @@ import './style.css';
 import * as THREE from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { property, plan, rooms, walls, windows, doors } from './property.js';
+import { createWalkthrough } from './walkthrough.js';
 
 const $ = (id) => document.getElementById(id);
 const dialog = $('sources-dialog');
-$('sources-button').onclick = () => dialog.showModal();
+$('sources-button').onclick = () => { if (walkthrough?.active) exitWalkthrough(); dialog.showModal(); };
 $('close-sources').onclick = () => dialog.close();
 $('official-plan').href = property.brochure;
 $('brochure-link').href = property.brochure;
@@ -15,7 +16,7 @@ dialog.addEventListener('click', (event) => {
   if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
 });
 
-let renderer, scene, camera, controls, furniture, labels;
+let renderer, scene, camera, controls, furniture, labels, walkthrough;
 let activeRoom = null;
 let frame = 0;
 let graphicsAvailable = false;
@@ -215,9 +216,45 @@ for (const room of rooms) {
 $('clear-room').onclick = () => selectRoom(null);
 
 function draw() {
-  if (!graphicsAvailable || frame || document.hidden) return;
-  frame = requestAnimationFrame(() => { frame = 0; renderer.render(scene, camera); });
+  if (!graphicsAvailable || frame || document.hidden || walkthrough?.active) return;
+  frame = requestAnimationFrame(() => { frame = 0; if (!walkthrough?.active) renderer.render(scene, camera); });
 }
+function enterWalkthrough() {
+  if (!graphicsAvailable || walkthrough?.active) return;
+  try {
+    walkthrough ??= createWalkthrough({ renderer, onExit: exitWalkthrough, onRoom: (room) => {
+      $('walk-room').textContent = room.name; selectRoom(room.id);
+    } });
+    controls.enabled = false;
+    document.querySelector('.workspace').classList.add('walking');
+    document.body.classList.add('walk-active');
+    document.querySelectorAll('.header, .sidebar, footer').forEach((el) => { el.inert = true; });
+    $('walk-overlay').hidden = false;
+    $('play-button').setAttribute('aria-expanded', 'true');
+    renderer.domElement.setAttribute('aria-label', 'A1 first-person walkthrough. WASD or arrows to move, drag to look, Q and E to turn, Escape to return to the floor plan.');
+    walkthrough.start($('furniture-toggle').checked);
+    const { width, height } = $('plan-canvas').getBoundingClientRect();
+    if (height) walkthrough.resize(width, height);
+  } catch (error) {
+    console.error('Walkthrough initialization failed', error);
+    exitWalkthrough();
+    $('gesture-help').textContent = 'Walkthrough could not start. The floor plan is still available.';
+  }
+}
+function exitWalkthrough() {
+  walkthrough?.stop();
+  if (controls) controls.enabled = true;
+  document.querySelector('.workspace').classList.remove('walking');
+  document.body.classList.remove('walk-active');
+  document.querySelectorAll('.header, .sidebar, footer').forEach((el) => { el.inert = false; });
+  $('walk-overlay').hidden = true;
+  $('play-button').setAttribute('aria-expanded', 'false');
+  if (renderer) renderer.domElement.setAttribute('aria-label', 'A1 top-down floor plan. Drag or arrows to pan, scroll or plus and minus to zoom, zero to fit.');
+  $('play-button').focus({ preventScroll: true });
+  draw();
+}
+$('play-button').onclick = enterWalkthrough;
+$('exit-walk-button').onclick = exitWalkthrough;
 function fitPlan() {
   if (!camera) return;
   const x = plan.width / 2 - 0.1;
@@ -256,17 +293,19 @@ function init() {
     const viewHeight = Math.max(plan.height + 1.4, (plan.width + 2.8) / aspect);
     camera.left = -viewHeight * aspect / 2; camera.right = viewHeight * aspect / 2;
     camera.top = viewHeight / 2; camera.bottom = -viewHeight / 2;
-    camera.updateProjectionMatrix(); renderer.setSize(width, height); draw();
+    camera.updateProjectionMatrix(); renderer.setSize(width, height); walkthrough?.resize(width, height); draw();
   }).observe($('plan-canvas'));
   let pointerStart = null;
   const pointers = new Set();
   let multiplePointers = false;
   canvas.addEventListener('pointerdown', (event) => {
+    if (walkthrough?.active) { pointerStart = null; pointers.clear(); return; }
     pointers.add(event.pointerId);
     if (pointers.size === 1) { multiplePointers = false; pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId }; }
     else multiplePointers = true;
   });
   canvas.addEventListener('pointerup', (event) => {
+    if (walkthrough?.active) return;
     pointers.delete(event.pointerId);
     if (multiplePointers || !pointerStart || pointerStart.id !== event.pointerId || event.button !== 0) return;
     const start = pointerStart; pointerStart = null;
@@ -279,6 +318,7 @@ function init() {
   });
   canvas.addEventListener('pointercancel', (event) => { pointers.delete(event.pointerId); pointerStart = null; });
   canvas.addEventListener('keydown', (event) => {
+    if (walkthrough?.active) return;
     if (['+', '=', '-', '0', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'].includes(event.key)) event.preventDefault();
     if (event.key === '+' || event.key === '=') zoom(1.2);
     if (event.key === '-') zoom(1 / 1.2);
@@ -291,7 +331,7 @@ function init() {
     }
   });
   canvas.addEventListener('webglcontextlost', (event) => {
-    event.preventDefault(); graphicsAvailable = false;
+    event.preventDefault(); exitWalkthrough(); graphicsAvailable = false;
     $('plan-status').hidden = false;
     $('plan-status').textContent = 'Graphics paused. Reload to restore the plan, or open the published A1 plan using the link in the sidebar.';
     setGraphicsControls(false);
@@ -299,7 +339,7 @@ function init() {
   $('plan-status').hidden = true;
 }
 function setGraphicsControls(enabled) {
-  for (const id of ['furniture-toggle', 'labels-toggle', 'zoom-in', 'zoom-out', 'reset-button', 'save-button']) $(id).disabled = !enabled;
+  for (const id of ['furniture-toggle', 'labels-toggle', 'zoom-in', 'zoom-out', 'reset-button', 'save-button', 'play-button']) $(id).disabled = !enabled;
 }
 $('furniture-toggle').onchange = (event) => { if (furniture) furniture.visible = event.target.checked; draw(); };
 $('labels-toggle').onchange = (event) => { if (labels) labels.visible = event.target.checked; draw(); };
@@ -307,7 +347,7 @@ $('zoom-in').onclick = () => zoom(1.2);
 $('zoom-out').onclick = () => zoom(1 / 1.2);
 $('reset-button').onclick = fitPlan;
 $('save-button').onclick = () => {
-  if (!graphicsAvailable) return;
+  if (!graphicsAvailable || walkthrough?.active) return;
   // Use a solid background in exports; leave the interactive canvas transparent.
   renderer.setClearColor('#eef0e8', 1); renderer.render(scene, camera);
   const exportCanvas = document.createElement('canvas');

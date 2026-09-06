@@ -31,4 +31,6 @@ The app is a manual, simplified redraw. Local drawing units are not surveyed met
 
 Loose furniture is illustrative. It is not a supplied package or a verified fit. Check approved dimensioned drawings before purchases or changes.
 
+The first-person walkthrough extrudes this same approximate plan. Ceiling height is estimated at 2.7 m and eye height at 1.62 m. Drawing units are treated as metres only for navigation. Walls, fixtures and furniture share collision geometry; all rooms and the terrace are reachable in the navigation tests. Internal doors are open passages, while the apartment entrance and terrace glass stay closed. Materials and ambient lights are invented design-study choices, not a verified interior, view or daylight simulation.
+
 The official site reserves rights to its images. The app links to the original PDF and does not store or republish its images. The old whole-building model and map data have been removed from the app.
