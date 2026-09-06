@@ -1,16 +1,40 @@
 import './style.css';
 import * as THREE from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
-import { property, plan, rooms, walls, windows, doors } from './property.js';
+import { property, plan, rooms, walls, windows, doors, terraceOpening, terraceGlass } from './property.js';
 import { createWalkthrough } from './walkthrough.js';
+import { fixedItems } from './interior.js';
+import { audit, sources, documentedDimensions, finishes, confirmationNeeded, ceiling } from './specification.js';
+import './audit.css';
 
 const $ = (id) => document.getElementById(id);
 const dialog = $('sources-dialog');
-$('sources-button').onclick = () => { if (walkthrough?.active) exitWalkthrough(); dialog.showModal(); };
+const showSources = () => { if (walkthrough?.active) exitWalkthrough(); dialog.showModal(); };
+$('sources-button').onclick = showSources;
+$('dimensions-button').onclick = showSources;
 $('close-sources').onclick = () => dialog.close();
 $('official-plan').href = property.brochure;
 $('brochure-link').href = property.brochure;
 $('property-link').href = property.website;
+$('audit-summary').textContent = `${audit.documents} documents / ${audit.pages} pages reviewed. No as-built survey supplied.`;
+$('ceiling-note').textContent = ceiling.status;
+for (const dimension of documentedDimensions) {
+  const card = document.createElement('div'); card.className = 'dimension-card';
+  for (const [tag, value] of [['strong', dimension.name], ['p', dimension.value], ['small', `${dimension.status} · ${dimension.source}`]]) {
+    const element = document.createElement(tag); element.textContent = value; card.append(element);
+  }
+  $('documented-dimensions').append(card);
+}
+for (const [id, name, date, note] of sources) {
+  const item = document.createElement('li');
+  const title = document.createElement('strong'); title.textContent = `${id} · ${name} · ${date}`;
+  const description = document.createElement('p'); description.textContent = note; item.append(title, description);
+  $('document-sources').append(item);
+}
+for (const note of confirmationNeeded) { const item = document.createElement('li'); item.textContent = note; $('confirmation-list').append(item); }
+for (const finish of Object.values(finishes)) {
+  const item = document.createElement('li'); item.textContent = `${finish.name} — ${finish.source}`; $('finish-list').append(item);
+}
 dialog.addEventListener('click', (event) => {
   const rect = dialog.getBoundingClientRect();
   if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
@@ -53,16 +77,16 @@ function circle(x, y, radius, color, z = 0.09, parent = scene, border = '#9c9f88
   polygon(points, color, z, parent);
   if (border) line(points, border, z + 0.005, parent);
 }
-function text(content, x, y, width = 2, height = 0.54, parent = labels, small = '') {
+function text(content, x, y, width = 2, height = 0.54, parent = labels, small = '', onDark = false) {
   const canvas = document.createElement('canvas');
   canvas.width = 640; canvas.height = 176;
   const ctx = canvas.getContext('2d');
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#536148';
+  ctx.fillStyle = onDark ? '#f6f5ed' : '#536148';
   ctx.font = '500 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
   ctx.fillText(content, 320, small ? 64 : 88, 610);
   if (small) {
-    ctx.fillStyle = '#8a927d'; ctx.font = '25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.fillStyle = onDark ? '#dedfd4' : '#8a927d'; ctx.font = '25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
     ctx.fillText(small, 320, 124, 610);
   }
   const texture = new THREE.CanvasTexture(canvas);
@@ -76,21 +100,21 @@ function addFlooring() {
   // A small paper-like shadow behind the plan, not a spatial building model.
   polygon(plan.outline.map(([x, y]) => [x + 0.09, y + 0.1]), '#d4d9cb', -0.05);
   polygon(plan.terrace.map(([x, y]) => [x + 0.09, y + 0.1]), '#d4d9cb', -0.05);
-  polygon(plan.outline, '#eae5d8', -0.02);
-  polygon(plan.terrace, '#ded9c9', -0.02);
+  polygon(plan.outline, finishes.floor.color, -0.02);
+  polygon(plan.terrace, finishes.terrace.color, -0.02);
   for (const room of rooms) {
     const mesh = polygon(room.polygon, room.color);
     mesh.material = mesh.material.clone();
     mesh.userData.room = room;
     roomMeshes.push(mesh);
   }
-  // Indicative floor finishes. Lines stay within rectangular room bounds.
-  for (const [x1, y1, x2, y2] of [[3.83, 0.46, 8.46, 3.17], [1.9, 0.46, 3.73, 3.17], [2.14, 7.25, 5.89, 10.15], [0.19, 3.98, 2.02, 10.15], [2.02, 3.26, 8.46, 7.05]]) {
-    for (let y = y1 + 0.21; y < y2; y += 0.21) line([[x1, y], [x2, y]], '#dcdacb', 0.025);
+  // Selected finish types; colours and grain are only visual approximations.
+  for (const room of rooms.filter((r) => !['bathroom', 'terrace'].includes(r.id))) {
+    const xs = room.polygon.map((p) => p[0]), ys = room.polygon.map((p) => p[1]);
+    for (let y = Math.min(...ys) + 0.21; y < Math.max(...ys); y += 0.21) line([[Math.min(...xs), y], [Math.max(...xs), y]], '#d4d0c2', 0.025);
   }
-  for (let y = 0.46; y < 3.85; y += 0.4) line([[0.19, y], [1.78, y]], '#cbd5ca', 0.025);
-  for (let x = 0.19; x < 1.78; x += 0.4) line([[x, 0.46], [x, 3.85]], '#cbd5ca', 0.025);
-  for (let x = 6.45; x < 8.68; x += 0.2) line([[x, 7.49], [x, 13.25]], '#bcbba5', 0.025);
+  for (let y = 0.46; y < 3.875; y += 0.1) line([[0.18, y], [1.925, y]], '#b8b09e', 0.025);
+  for (let x = 0.18; x < 1.925; x += 0.1) line([[x, 0.46], [x, 3.875]], '#b8b09e', 0.025);
 }
 
 function addWallsAndOpenings() {
@@ -102,11 +126,10 @@ function addWallsAndOpenings() {
     line([[w.x1 - 0.1, mid], [w.x1 + 0.1, mid]], '#88a8a8', 0.32);
   }
   // Terrace opening and openable glazing on its outer edge.
-  line([[6.61, 7.14], [8.17, 7.14]], '#87a3a2', 0.32);
-  line([[6.61, 7.24], [8.17, 7.24]], '#87a3a2', 0.32);
-  line([[8.69, 7.49], [8.69, 13.25]], '#91a5a0', 0.32);
-  line([[8.83, 7.49], [8.83, 13.25]], '#91a5a0', 0.32);
-  for (let y = 7.49; y <= 13.25; y += 0.72) line([[8.69, y], [8.83, y]], '#91a5a0', 0.32);
+  const opening = terraceOpening, glass = terraceGlass;
+  for (const offset of [0, 0.1]) line([[opening.x, opening.z + offset], [opening.x + opening.width, opening.z + offset]], '#87a3a2', 0.32);
+  for (const offset of [0, 0.12]) line([[glass.x + offset, glass.z], [glass.x + offset, glass.z + glass.depth]], '#91a5a0', 0.32);
+  for (let y = glass.z; y <= glass.z + glass.depth; y += 0.72) line([[glass.x, y], [glass.x + 0.12, y]], '#91a5a0', 0.32);
   for (const d of doors) {
     const arc = Array.from({ length: 25 }, (_, i) => {
       const angle = d.closed + (d.open - d.closed) * i / 24;
@@ -120,32 +143,27 @@ function addWallsAndOpenings() {
   line([[-0.43, 9.41], [-0.22, 9.57], [-0.43, 9.73]], '#7b8c64', 0.3);
 }
 
-function cabinet(x, y, w, h, parent = scene) {
-  rect(x, y, w, h, '#f4f1e7', 0.13, parent, '#a6ab94');
-  line([[x + 0.08, y + 0.08], [x + w - 0.08, y + h - 0.08]], '#b7bba8', 0.14, parent);
-}
 function addFixtures() {
-  // Fixed kitchen run (indicative appliance widths).
-  for (let i = 0; i < 6; i++) rect(2.05 + i * 0.56, 6.4, 0.56, 0.62, '#f4f2e9', 0.13, scene, '#a6ab94');
-  for (const [x, y] of [[2.77, 6.57], [3.0, 6.57], [2.77, 6.83], [3.0, 6.83]]) circle(x, y, 0.08, '#e5e7da', 0.15);
-  rect(3.61, 6.51, 0.41, 0.38, '#d7e1da', 0.15, scene, '#a3afa1');
-  line([[3.82, 6.4], [3.82, 6.56]], '#879980', 0.17);
-  cabinet(4.87, 6.4, 0.56, 0.62);
-  // Hall storage, bedroom storage and wardrobe fittings.
-  cabinet(0.2, 6.0, 0.64, 1.03); cabinet(0.2, 7.23, 0.64, 1.25);
-  cabinet(2.18, 7.28, 0.58, 1.03);
-  cabinet(2.0, 0.48, 0.52, 2.58);
-  cabinet(2.57, 0.48, 1.1, 0.53); cabinet(2.57, 2.55, 1.1, 0.53);
-  // Bathroom: shower, basin, toilet and laundry provision.
-  rect(0.23, 0.51, 1.47, 1.03, '#e7eee7', 0.12, scene, '#a5b5a3');
-  line([[0.23, 1.53], [1.5, 1.53]], '#8eaaa4', 0.17);
-  circle(0.58, 0.83, 0.08, '#9caf9b', 0.16);
-  rect(0.23, 1.73, 0.45, 0.67, '#fafbf5', 0.14, scene, '#a6b09d');
-  circle(0.46, 2.01, 0.13, '#d3e0d8', 0.16);
-  rect(0.24, 2.51, 0.34, 0.33, '#f5f7ed', 0.14, scene, '#a6b09d');
-  circle(0.65, 2.68, 0.22, '#f5f7ed', 0.16);
-  rect(0.24, 3.19, 0.61, 0.59, '#f0f2e7', 0.14, scene, '#a6b09d');
-  circle(0.54, 3.49, 0.19, '#e0e7dc', 0.16);
+  // Same fixed footprints as the walkthrough and collision model.
+  for (const item of fixedItems) {
+    const [x, z, w, d, , color] = item.box;
+    rect(x, z, w, d, color, 0.13, scene, '#999e89');
+    if (item.kind === 'mirror') {
+      rect(x + w - 0.09, z + 0.02, 0.06, d - 0.04, '#acc0b9', 0.14);
+      line([[x + 0.06, z + d / 2], [x + w, z + d / 2]], '#939f92', 0.15);
+    }
+  }
+  const [kx, kz, kw, kd] = fixedItems.find((i) => i.id === 'kitchen-base').box;
+  rect(kx, kz, kw, kd, finishes.worktop.color, 0.145);
+  for (const dx of [0.4, 1.0, 1.5, 2.1]) line([[kx + dx, kz], [kx + dx, kz + kd]], '#abaea0', 0.15);
+  rect(kx + 0.4, kz + 0.06, 0.6, 0.48, '#333c36', 0.16);
+  rect(kx + 1.6, kz + 0.07, 0.46, 0.46, '#333c36', 0.16);
+  line([[kx + 1.8, kz + 0.03], [kx + 1.8, kz + 0.19]], '#242f28', 0.17);
+  line([[0.18, 1.35], [1.35, 1.35]], '#414944', 0.17);
+  const [vx, vz, vw, vd] = fixedItems.find((i) => i.id === 'vanity').box;
+  rect(vx + 0.03, vz + 0.06, vw - 0.06, vd - 0.12, '#dadcd0', 0.16);
+  const [tx, tz, tw, td] = fixedItems.find((i) => i.id === 'toilet').box;
+  circle(tx + tw * 0.69, tz + td / 2, td / 2 - 0.02, '#f4f4ed', 0.16);
 }
 
 function bed(x, y, w, h, horizontal = false) {
@@ -182,19 +200,22 @@ function addFurniture() {
 function addLabels() {
   for (const room of rooms) {
     const narrow = ['bathroom', 'wardrobe', 'entry'].includes(room.id);
-    text(room.short, ...room.label, narrow ? 1.32 : 2.2, narrow ? 0.48 : 0.55, labels, room.code);
+    text(room.short, ...room.label, narrow ? 1.32 : 2.2, narrow ? 0.48 : 0.55, labels, room.code, room.id === 'terrace');
   }
   text('KITCHEN', 4.27, 5.99, 1.6, 0.36);
   // This stays in PNG exports even when room labels are hidden.
   text('A1 · 71 m² · FLOOR 1', 3.02, 11.84, 3.6, 0.7, scene);
-  text('INDICATIVE REDRAW · NOT TO SCALE', 3.02, 12.33, 3.45, 0.38, scene);
-  text('Reference: official brochure, p.25', 3.02, 12.69, 3.4, 0.36, scene);
+  text('NOT FOR FURNITURE ORDERS', 3.02, 12.33, 3.45, 0.38, scene);
+  text('Drawing-scale geometry · S01 p.14', 3.02, 12.69, 3.4, 0.36, scene);
 }
 
 function selectRoom(id) {
   activeRoom = id;
   const room = rooms.find((item) => item.id === id);
-  for (const mesh of roomMeshes) mesh.material.color.set(mesh.userData.room.id === id ? '#cddcbb' : mesh.userData.room.color);
+  for (const mesh of roomMeshes) {
+    const color = id === 'terrace' ? '#525d4a' : '#cddcbb';
+    mesh.material.color.set(mesh.userData.room.id === id ? color : mesh.userData.room.color);
+  }
   document.querySelectorAll('[data-room]').forEach((button) => {
     const selected = button.dataset.room === id;
     button.classList.toggle('selected', selected);
@@ -356,7 +377,7 @@ $('save-button').onclick = () => {
   ctx.fillStyle = '#eef0e8'; ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
   ctx.drawImage(renderer.domElement, 0, 0);
   ctx.fillStyle = '#536148'; ctx.textAlign = 'center'; ctx.font = '18px sans-serif';
-  ctx.fillText('A1 · 71 m² · Indicative redraw, not to scale · Official brochure p.25', exportCanvas.width / 2, exportCanvas.height - 30, exportCanvas.width - 32);
+  ctx.fillText('A1 · Drawing-scale model · NOT for furniture orders · Confirm on site', exportCanvas.width / 2, exportCanvas.height - 30, exportCanvas.width - 32);
   renderer.setClearColor('#eef0e8', 0); draw();
   exportCanvas.toBlob((blob) => {
     if (!blob) { $('gesture-help').textContent = 'Could not export the plan. Please try again.'; return; }

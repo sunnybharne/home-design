@@ -28,8 +28,9 @@ npm run build
 - Select rooms from the plan or room list.
 - Pan, zoom and fit the plan to the screen.
 - Toggle illustrative furniture and room labels.
-- Export a PNG with an accuracy note.
-- Open the official A1 plan on brochure page 25.
+- Export a PNG with a furniture-order warning.
+- Review sourced dimensions, selected finishes and open questions in “Dimensions & accuracy”.
+- Open the public A1 plan on brochure page 25.
 
 Plan controls: arrow keys to pan, +/− to zoom, 0 to fit, Escape to clear selection.
 
@@ -46,9 +47,17 @@ Reduced-motion settings skip the entry animation. Movement stops when the tab lo
 
 A1 is listed as 71 m², 3H + KT, on floor 1. It has two bedrooms and a private terrace.
 
-This is a simplified redraw of the published plan, **not a dimensioned drawing**. Geometry, wall thicknesses, openings and furniture are approximate. Room areas are not calculated or claimed. The walkthrough uses an estimated 2.7 m ceiling and 1.62 m eye height; finishes and lights are illustrative. Doors are open passages, apart from the closed apartment entrance. Verify approved dimensions before buying furniture or making changes.
+**Not ready for furniture orders.** The 13 supplied documents (96 pages) provide planned cabinet sizes, but no as-built apartment survey. The apartment card says dimensions are indicative and may change.
 
-The source PDF and images are linked, not republished. See [research notes](docs/research.md).
+Geometry is scaled from the supplied 1:100 marketing plan. Fixed units use stated sizes where available; their locations and some dimensions remain scaled. Heights are provisional: 3395 mm main elevation context, 2800 mm hall/wardrobe and 2350 mm bathroom. Selected finishes now follow the apartment card, but screen colours and product shapes remain approximate.
+
+Read the [measurement audit](docs/measurement-audit.md) and complete the blank [site-measurement checklist](docs/site-measurements.csv) before furniture purchases.
+
+## Owner documents
+
+Originals are organised under the ignored `documents/` folder: apartment, cabinetry, bathroom, electrical and project files. The local index is `documents/README.md`. Extracted text and review images are also private. Do not force-add them to Git or put them in `public/`.
+
+Only curated non-personal facts appear in the app. The production build checks for private files and PDF copies.
 
 ## GitHub Pages
 
@@ -61,6 +70,8 @@ Pushes to `main` run tests, build the app and deploy through `.github/workflows/
 - `src/property.js`: apartment facts and indicative plan geometry.
 - `src/main.js`: Three.js floor-plan renderer and controls.
 - `src/walkthrough.js`: first-person scene, animation and controls.
-- `src/navigation.js`: collision checks and shared interior geometry.
+- `src/navigation.js`: collision checks.
+- `src/interior.js`: shared fixed-unit footprints and provenance.
+- `src/specification.js`: source register, stated dimensions, finishes and accuracy limits.
 - `src/style.css`: layout and appearance.
 - `test/`: source, plan, collision and room-access checks.

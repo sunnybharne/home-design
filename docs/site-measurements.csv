@@ -1,0 +1,21 @@
+id,space,measurement,measured_mm,date,tool,uncertainty_mm,drawing_revision,reference_surfaces,notes
+A1-001,upper-bedroom,wall-to-wall width,,,,,,,Measure finished faces at several heights
+A1-002,upper-bedroom,wall-to-wall depth,,,,,,,Record both sides and diagonals
+A1-003,lower-bedroom,wall-to-wall width,,,,,,,Allow for skirting and cabinet filler
+A1-004,lower-bedroom,wall-to-wall depth,,,,,,,Record both sides and diagonals
+A1-005,living-kitchen,main wall length,,,,,,,Do not derive from total apartment area
+A1-006,living-kitchen,finished kitchen run,,,,,,,Confirm end panels and appliance installation clearances
+A1-007,entry,clear aisle width,,,,,,,Measure with cabinets and mirror doors installed
+A1-008,wardrobe,finished short side,,,,,,,Compare with nominal 1700 mm design size
+A1-009,wardrobe,finished long side,,,,,,,Compare with nominal 2700 mm design size
+A1-010,bathroom,finished width,,,,,,,Include service-box projection and tile finish
+A1-011,bathroom,finished length,,,,,,,Keep access to plumbing and laundry appliances
+A1-012,main-rooms,clear ceiling height,,,,,,,Resolve 3395 mm cabinet-elevation context on site
+A1-013,entry,lowered ceiling height and extent,,,,,,,Electrical background is not architectural authority
+A1-014,wardrobe,clear ceiling height,,,,,,,Compare with nominal 2800 mm design size
+A1-015,bathroom,clear ceiling height,,,,,,,2350 mm on sales sheet is explicitly indicative
+A1-016,windows,sill height and reveal depth,,,,,,,Resolve 700 versus 725 mm notes
+A1-017,doors,clear opening width and height,,,,,,,Measure each doorway and full delivery route
+A1-018,terrace,finished width and depth,,,,,,,No certified terrace area supplied
+A1-019,terrace,threshold and level change,,,,,,,Walkthrough floor is level for navigation only
+A1-020,all-rooms,service and socket offsets,,,,,,,Reference finished corners and note coordinate origin

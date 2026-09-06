@@ -1,6 +1,8 @@
 import * as THREE from 'three';
-import { plan, rooms, walls, windows, doors } from './property.js';
-import { EYE_HEIGHT, WALL_HEIGHT, SPAWN, fixtures, looseFurniture, movePlayer, insidePolygon } from './navigation.js';
+import { plan, rooms, walls, windows, doors, terraceOpening, terraceGlass } from './property.js';
+import { EYE_HEIGHT, WALL_HEIGHT, SPAWN, looseFurniture, movePlayer, insidePolygon } from './navigation.js';
+import { fixedItems } from './interior.js';
+import { finishes, ceiling as ceilingLevels } from './specification.js';
 
 export function createWalkthrough({ renderer, onExit, onRoom }) {
   const canvas = renderer.domElement;
@@ -35,56 +37,94 @@ export function createWalkthrough({ renderer, onExit, onRoom }) {
   function floorTexture() {
     const c = document.createElement('canvas'); c.width = 256; c.height = 256;
     const ctx = c.getContext('2d');
-    ctx.fillStyle = '#c9ba98'; ctx.fillRect(0, 0, 256, 256);
+    ctx.fillStyle = finishes.floor.color; ctx.fillRect(0, 0, 256, 256);
     for (let row = 0; row < 8; row++) {
-      ctx.fillStyle = row % 2 ? '#cfc1a2' : '#c6b694'; ctx.fillRect(0, row * 32 + 1, 256, 30);
-      ctx.strokeStyle = '#b6a685'; ctx.beginPath(); ctx.moveTo((row % 3) * 80 + 10, row * 32); ctx.lineTo((row % 3) * 80 + 10, row * 32 + 32); ctx.stroke();
+      ctx.fillStyle = row % 2 ? '#e4dfd1' : '#dad4c5'; ctx.fillRect(0, row * 32 + 1, 256, 30);
+      ctx.strokeStyle = '#c7c1b2'; ctx.beginPath(); ctx.moveTo((row % 3) * 80 + 10, row * 32); ctx.lineTo((row % 3) * 80 + 10, row * 32 + 32); ctx.stroke();
     }
     const texture = new THREE.CanvasTexture(c); texture.colorSpace = THREE.SRGBColorSpace;
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping; texture.repeat.set(0.45, 0.45);
     return texture;
   }
   surface(plan.outline, 0, new THREE.MeshStandardMaterial({ map: floorTexture(), roughness: 0.9, side: THREE.DoubleSide }));
-  surface(plan.terrace, 0, mat('#b7ad92'));
+  surface(plan.terrace, 0, mat(finishes.terrace.color));
   const bath = rooms.find((r) => r.id === 'bathroom');
-  surface(bath.polygon, 0.008, mat('#b8c8ba'));
-  const ceiling = surface(plan.outline, WALL_HEIGHT, new THREE.MeshStandardMaterial({ color: '#f4f1e8', side: THREE.DoubleSide }));
+  surface(bath.polygon, 0.008, mat(finishes.bath.color));
+  const ceiling = new THREE.Group(); scene.add(ceiling);
+  ceiling.add(surface(plan.outline, WALL_HEIGHT, new THREE.MeshStandardMaterial({ color: finishes.wall.color, side: THREE.DoubleSide })));
+  for (const id of ['entry', 'wardrobe', 'bathroom']) {
+    const room = rooms.find((r) => r.id === id), height = ceilingLevels[id];
+    ceiling.add(surface(room.polygon, height, new THREE.MeshStandardMaterial({ color: id === 'bathroom' ? finishes.bathCeiling.color : finishes.wall.color, side: THREE.DoubleSide })));
+  }
+  // Provisional dropped-ceiling edge over the open hall, not an approved section.
+  ceiling.add(box(2.0, 3.97, 0.05, 3.07, WALL_HEIGHT - ceilingLevels.entry, finishes.wall.color, ceilingLevels.entry));
   for (const [x, z, w, d] of walls) {
-    box(x, z, w, d, WALL_HEIGHT, '#e7e3d7');
-    box(x - 0.012, z - 0.012, w + 0.024, d + 0.024, 0.095, '#bdbba9');
+    box(x, z, w, d, WALL_HEIGHT, finishes.wall.color);
+    box(x - 0.012, z - 0.012, w + 0.024, d + 0.024, 0.042, '#e5e3d9');
+  }
+  for (const [x, z, w, d] of [[1.917, 0.46, 0.008, 3.415], [0.18, 0.46, 1.745, 0.008], [0.18, 0.46, 0.008, 3.415], [0.51, 1.355, 0.008, 0.95], [0.18, 1.355, 0.33, 0.008], [0.18, 2.305, 0.33, 0.008], [0.18, 3.867, 0.775, 0.008], [1.875, 3.867, 0.05, 0.008]]) {
+    box(x, z, w, d, ceilingLevels.bathroom, finishes.bath.color);
   }
   const glass = new THREE.MeshStandardMaterial({ color: '#c6e3e2', transparent: true, opacity: 0.28, roughness: 0.15, depthWrite: false, side: THREE.DoubleSide });
   for (const w of windows) {
     const length = w.y2 - w.y1;
-    box(w.x1 - 0.19, w.y1, 0.38, length, 0.7, '#e7e3d7');
-    box(w.x1 - 0.19, w.y1, 0.38, length, WALL_HEIGHT - 2.25, '#e7e3d7', 2.25);
-    box(w.x1 - 0.015, w.y1, 0.03, length, 1.55, glass, 0.7);
-    for (const base of [0.7, 2.21]) box(w.x1 - 0.05, w.y1, 0.1, length, 0.04, '#879793', base);
-    for (const z of [w.y1, (w.y1 + w.y2) / 2, w.y2 - 0.035]) box(w.x1 - 0.05, z, 0.1, 0.035, 1.55, '#879793', 0.7);
+    // Sill/head heights remain provisional: marketing says 700 mm;
+    // electrical background also shows 725 mm, but is not an architectural authority.
+    box(w.x1 - 0.23, w.y1, 0.46, length, 0.7, finishes.wall.color);
+    box(w.x1 - 0.23, w.y1, 0.46, length, WALL_HEIGHT - 2.8, finishes.wall.color, 2.8);
+    box(w.x1 - 0.015, w.y1, 0.03, length, 2.1, glass, 0.7);
+    for (const base of [0.7, 2.76]) box(w.x1 - 0.05, w.y1, 0.1, length, 0.04, '#879793', base);
+    for (const z of [w.y1, (w.y1 + w.y2) / 2, w.y2 - 0.035]) box(w.x1 - 0.05, z, 0.1, 0.035, 2.1, '#879793', 0.7);
   }
   // Open internal doorways with lintels. No swinging leaf blocks the passage.
-  for (const d of doors.slice(1)) {
+  for (const d of doors.slice(1, -1)) {
     const ex = d.x + Math.cos(d.closed) * d.radius, ez = d.y + Math.sin(d.closed) * d.radius;
     box(Math.min(d.x, ex) - 0.04, Math.min(d.y, ez) - 0.04,
       Math.max(0.08, Math.abs(ex - d.x) + 0.08), Math.max(0.08, Math.abs(ez - d.y) + 0.08),
-      WALL_HEIGHT - 2.15, '#e7e3d7', 2.15);
+      WALL_HEIGHT - 2.1, finishes.wall.color, 2.1);
   }
-  // Close the unused portion of the wide terrace doorway above head height.
-  box(6.61, 7.1, 1.56, 0.14, WALL_HEIGHT - 2.15, '#e7e3d7', 2.15);
-  box(0.02, 9.08, 0.15, 0.94, 2.15, '#a89a80');
-  box(0, 9.08, 0.19, 0.94, WALL_HEIGHT - 2.15, '#e7e3d7', 2.15);
-  box(8.72, 7.49, 0.025, 5.76, 2.5, glass);
-  for (let z = 7.49; z <= 13.25; z += 0.72) box(8.71, z, 0.045, 0.035, 2.5, '#879793');
-  for (const b of fixtures) box(...b);
-  // Kitchen worktop, sink and hob.
-  box(2.05, 6.4, 2.82, 0.62, 0.045, '#f1efe3', 0.91);
-  box(3.6, 6.51, 0.43, 0.4, 0.02, '#8ca39b', 0.96);
-  box(2.65, 6.5, 0.5, 0.43, 0.02, '#39433e', 0.96);
-  box(3.8, 6.44, 0.025, 0.025, 0.24, '#83948c', 0.96);
-  // Bathroom mirror and shower fittings; the shower remains walkable.
-  box(0.2, 1.78, 0.015, 0.58, 0.8, '#afc4bd', 1.12);
-  box(0.21, 0.74, 0.03, 0.03, 1.05, '#8b9d94', 1.05);
-  box(0.21, 0.71, 0.3, 0.16, 0.035, '#8b9d94', 2.1);
+  const opening = terraceOpening, edge = terraceGlass;
+  box(opening.x, opening.z - 0.04, opening.width, 0.14, WALL_HEIGHT - 2.8, finishes.wall.color, 2.8);
+  box(0.02, doors[0].y, 0.15, doors[0].radius, 2.1, '#e5e1d4');
+  box(0, doors[0].y, 0.18, doors[0].radius, WALL_HEIGHT - 2.1, finishes.wall.color, 2.1);
+  box(edge.x, edge.z, 0.025, edge.depth, 2.5, glass);
+  for (let z = edge.z; z <= edge.z + edge.depth; z += 0.72) box(edge.x, z, 0.045, 0.035, 2.5, '#879793');
+  for (const item of fixedItems) {
+    const [x, z, w, d, h, color] = item.box;
+    if (item.kind === 'shelf' || item.kind === 'rail') {
+      box(x, z, 0.016, d, h, color); box(x + w - 0.016, z, 0.016, d, h, color);
+      if (item.kind === 'shelf') for (let y = 0.2; y <= h; y += 0.36) box(x, z, w, d, 0.016, color, y);
+      else { box(x, z, w, d, 0.02, color, h - 0.02); box(x + w / 2, z, 0.025, d, 0.025, '#90938a', 1.87); }
+    } else if (item.kind === 'laundry') {
+      box(x, z + 0.016, w, d - 0.032, 0.576, color, 1.75);
+      for (const dz of [0, d - 0.016]) box(x, z + dz, w, 0.016, h, color);
+      box(x + 0.01, z + 0.1, 0.57, 0.6, 1.66, '#e6e5dc'); // tower is a placeholder, not a selected appliance
+    } else if (item.kind === 'toilet') {
+      box(x, z, 0.16, d, h, color); box(x + 0.12, z, w - 0.12, d, 0.42, color);
+    } else {
+      box(...item.box);
+      if (item.kind === 'mirror') {
+        box(x + w, z + 0.02, 0.005, d - 0.04, 2.361, new THREE.MeshStandardMaterial({ color: '#bfcfc9', metalness: 0.6, roughness: 0.18 }), 0.07);
+        box(x + w + 0.005, z + d / 2, 0.008, 0.012, 2.361, '#909990', 0.07);
+      }
+    }
+  }
+  const [kx, kz, kw, kd, kh] = fixedItems.find((i) => i.id === 'kitchen-base').box;
+  box(kx, kz, kw, kd, 0.04, finishes.worktop.color, kh);
+  box(kx, kz + kd - 0.015, kw, 0.015, 0.46, finishes.backsplash.color, kh + 0.04);
+  box(kx + 1.6, kz + 0.07, 0.46, 0.46, 0.016, '#262e29', kh + 0.04);
+  box(kx + 0.4, kz + 0.06, 0.6, 0.48, 0.016, '#262e29', kh + 0.04);
+  box(kx + 1.8, kz + 0.5, 0.025, 0.025, 0.25, '#252d28', kh + 0.04);
+  box(kx + 0.4, kz - 0.01, 0.6, 0.025, 0.6, '#262e29', 0.166);
+  // Upper cabinet heights are scaled, not stated installation dimensions.
+  box(kx, kz + 0.26, kw, 0.34, 0.878, finishes.kitchen.color, 1.4);
+  box(kx + 2.12, kz + 0.245, 0.56, 0.02, 0.38, '#262e29', 1.42);
+  box(kx + 0.4, kz + 0.21, 0.6, 0.39, 0.065, '#262e29', 1.4);
+  const [vx, vz, vw, vd, vh] = fixedItems.find((i) => i.id === 'vanity').box;
+  box(vx, vz, vw, vd, 0.025, '#f4f3e9', vh);
+  box(vx + 0.015, vz, 0.015, vd, 0.7, '#bfcec7', 1.15);
+  box(0.21, 0.74, 0.03, 0.03, 1.05, '#252d28', 1.05);
+  box(0.21, 0.71, 0.3, 0.16, 0.035, '#252d28', 2.1);
   for (const b of looseFurniture) box(...b, 0, furniture);
   // Softer furniture details over the collision volumes.
   box(6.39, 0.68, 1.47, 1.94, 0.13, '#e5e8d6', 0.48, furniture);
@@ -96,9 +136,9 @@ export function createWalkthrough({ renderer, onExit, onRoom }) {
   scene.add(new THREE.HemisphereLight('#f8f6e9', '#b8b296', 2.4));
   scene.add(new THREE.AmbientLight('#fff5df', 0.65));
   const sunlight = new THREE.DirectionalLight('#fff5e4', 1.5); sunlight.position.set(15, 12, -5); scene.add(sunlight);
-  for (const [x, z] of [[4.6, 4.4], [5.6, 1.8], [3.9, 8.3], [1.1, 6], [1, 2.1]]) {
-    const light = new THREE.PointLight('#fff0d5', 1.8, 8, 2); light.position.set(x, 2.25, z); scene.add(light);
-    box(x - 0.17, z - 0.17, 0.34, 0.34, 0.03, new THREE.MeshBasicMaterial({ color: '#fff4d6' }), 2.65);
+  for (const [x, z, height] of [[4.6, 4.4, WALL_HEIGHT], [5.6, 1.8, WALL_HEIGHT], [3.9, 8.3, WALL_HEIGHT], [1.2, 6, ceilingLevels.entry], [1.2, 2.1, ceilingLevels.bathroom]]) {
+    const light = new THREE.PointLight('#fff5e9', 1.8, 8, 2); light.position.set(x, height - 0.45, z); scene.add(light);
+    box(x - 0.12, z - 0.12, 0.24, 0.24, 0.025, new THREE.MeshBasicMaterial({ color: '#fff5e9' }), height - 0.03);
   }
 
   const startPosition = new THREE.Vector3(plan.width / 2, 15, plan.height / 2);

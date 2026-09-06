@@ -5,3 +5,8 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Owner documents stay local. Never publish them to the public repo or Pages.
+/documents/
+/*.pdf
+/1945905

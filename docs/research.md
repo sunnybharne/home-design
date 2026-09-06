@@ -1,36 +1,22 @@
-# A1 floor-plan reference
+# A1 sources
 
-Researched 6 September 2026. The app now focuses only on apartment A1.
+The owner supplied 13 documents, 96 pages. See the full [measurement audit](measurement-audit.md) for the source register, dimension checks, changes and unresolved questions.
 
-## Sources
+## Public references
 
 - [Official property website](https://helsinginsaarenhelmi.fi/)
-- [Sales brochure, 22 December 2025, page 25](https://helsinginsaarenhelmi.fi/wp-content/uploads/2025/12/Kilo-Invest-Oy-As-Oy-Helsingin-Saarenhelmi-Esite_web_22122025.pdf#page=25)
+- [Public brochure, A1 on page 25](https://helsinginsaarenhelmi.fi/wp-content/uploads/2025/12/Kilo-Invest-Oy-As-Oy-Helsingin-Saarenhelmi-Esite_web_22122025.pdf#page=25)
 
-## Published facts
+A1 is listed as 71 m², 3H + KT, floor 1, at Tihtaalinkatu 5, Helsinki.
 
-- Property: As Oy Helsingin Saarenhelmi.
-- Address: Tihtaalinkatu 5, 00540 Helsinki.
-- Apartment: A1, also written A01 in the plan.
-- Floor: 1.
-- Apartment area: 71 m².
-- Type: 3H + KT (two bedrooms, living room and open kitchen).
-- Rooms: MH × 2, OH, RT, KT, KPH, VH, ET.
-- Private terrace with openable terrace glazing marked on the plan.
-- Contractor: Fira Rakennus Oy. Developer: Kilo Invest Oy.
+## Current model
 
-## Layout interpretation
+- Room geometry: scaled from the supplied native marketing PDF, A01 on page 14, not the old screenshot-based sketch.
+- Cabinet dimensions: stated values from the relevant supplier drawings where available.
+- Finishes: apartment card v2, 5 May 2026, cross-checked with the confirmed selection export.
+- Ceiling heights: provisional and explicitly labeled; not a uniform invented 2.7 m anymore.
+- Electrical drawing: electrical use only, not a source of certified room dimensions.
 
-The upper bedroom sits beside a walk-in wardrobe and bathroom. The open living, dining and kitchen space is in the middle. The entrance and hall are at the lower left, with the second bedroom beside them. The terrace extends down the right side and connects to the living area.
+**This is not an as-built replica or a furniture-ordering drawing.** No measurement survey was supplied. The apartment card itself says dimensions are indicative and may change.
 
-The original plan has no bedroom numbers; the app calls them Bedroom 1 and Bedroom 2 for navigation.
-
-## Limits
-
-The app is a manual, simplified redraw. Local drawing units are not surveyed metres. The wall thicknesses, room proportions, openings, fixtures and furniture are approximate. The sourced 71 m² figure is not calculated from the drawn polygons. No individual room or terrace areas are claimed.
-
-Loose furniture is illustrative. It is not a supplied package or a verified fit. Check approved dimensioned drawings before purchases or changes.
-
-The first-person walkthrough extrudes this same approximate plan. Ceiling height is estimated at 2.7 m and eye height at 1.62 m. Drawing units are treated as metres only for navigation. Walls, fixtures and furniture share collision geometry; all rooms and the terrace are reachable in the navigation tests. Internal doors are open passages, while the apartment entrance and terrace glass stay closed. Materials and ambient lights are invented design-study choices, not a verified interior, view or daylight simulation.
-
-The official site reserves rights to its images. The app links to the original PDF and does not store or republish its images. The old whole-building model and map data have been removed from the app.
+Private originals, extraction files and previews live under `documents/` and are excluded from Git and deployment. The local index is `documents/README.md`. Only curated non-personal facts are used in the public app.

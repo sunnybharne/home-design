@@ -11,7 +11,7 @@
   <header class="header">
     <a class="brand" href="%BASE_URL%" aria-label="Home Design"><span class="brand-symbol">⌂</span><span>HOME DESIGN<small>Your home, thoughtfully imagined.</small></span></a>
     <div class="breadcrumb">SAARENHELMI <span>/</span> <strong>APARTMENT A1</strong></div>
-    <button class="outline-button" id="sources-button">About this plan ↗</button>
+    <button class="outline-button" id="sources-button">Dimensions & accuracy ↗</button>
   </header>
   <main>
     <aside class="sidebar">
@@ -23,18 +23,19 @@
       <section class="room-section" aria-labelledby="rooms-heading"><div class="section-heading"><h2 id="rooms-heading">Your spaces</h2><button class="text-button" id="clear-room">Show all</button></div><div class="room-list" id="room-list"></div></section>
       <section class="room-detail" aria-live="polite"><div class="eyebrow" id="detail-code">THE APARTMENT</div><h3 id="detail-title">Room to make it yours.</h3><p id="detail-description">Two bedrooms, an open living / dining / kitchen area, a bathroom, a walk-in wardrobe and a private terrace.</p></section>
       <a id="official-plan" class="text-link" target="_blank" rel="noopener noreferrer">Open the published A1 plan · p.25 ↗</a>
-      <p class="accuracy-note">Redrawn from the official brochure. Geometry and furniture are indicative, not measured. The published apartment area is 71 m²; terrace area is not specified here.</p>
+      <div class="accuracy-warning"><strong>Not ready for furniture orders</strong><p>Cabinet sizes are sourced. Room geometry is drawing-scale, not site-measured. Confirm finished dimensions before buying fitted furniture.</p><button id="dimensions-button">See dimensions & open questions ↗</button></div>
+      <p class="accuracy-note">13 documents / 96 pages reviewed. Originals stay private. The published 71 m² is not a measured sum of these room polygons.</p>
     </aside>
     <section class="workspace" aria-label="A1 apartment floor plan">
-      <div class="workspace-top"><div><span class="eyebrow">APARTMENT STUDY / A1</span><h2>Every room, in one view.</h2></div><span class="status-badge"><span class="dot"></span> Top-down floor plan</span></div>
+      <div class="workspace-top"><div><span class="eyebrow">APARTMENT STUDY / A1</span><h2>Every room, in one view.</h2></div><span class="status-badge"><span class="dot"></span> Drawing-scale · not as-built</span></div>
       <div id="plan-canvas" aria-label="Interactive floor plan"><div id="plan-status" role="status">Preparing your floor plan…</div></div>
-      <div class="display-tools"><button id="play-button" class="play-button" aria-expanded="false" aria-controls="walk-overlay">▶ Play walkthrough</button><label><input id="furniture-toggle" type="checkbox" checked /> Furniture</label><label><input id="labels-toggle" type="checkbox" checked /> Room labels</label></div>
+      <div class="display-tools"><button id="play-button" class="play-button" aria-expanded="false" aria-controls="walk-overlay">▶ Play walkthrough</button><label><input id="furniture-toggle" type="checkbox" checked /> Furniture ideas</label><label><input id="labels-toggle" type="checkbox" checked /> Room labels</label></div>
       <div id="walk-overlay" hidden>
-        <div class="walk-top"><div><span class="eyebrow">INSIDE A1 · ESTIMATED INTERIOR</span><h2 id="walk-room" aria-live="polite">Entrance / hallway</h2></div><button id="exit-walk-button">✕ Back to plan</button></div>
+        <div class="walk-top"><div><span class="eyebrow">INSIDE A1 · NOT FOR FURNITURE ORDERS</span><h2 id="walk-room" aria-live="polite">Entrance / hallway</h2></div><button id="exit-walk-button">✕ Back to plan</button></div>
         <div class="walk-crosshair" aria-hidden="true">+</div>
         <div class="walk-actions"><button id="mouse-look-button">Use mouse look</button><button id="walk-reset-button">↺ Return to entrance</button></div>
         <div class="walk-pad" role="group" aria-label="Walk controls. Hold a direction to move; drag the view to look around."><button id="move-forward" data-move="forward" aria-label="Walk forward">↑</button><button id="move-left" data-move="left" aria-label="Step left">←</button><button id="move-back" data-move="back" aria-label="Walk backward">↓</button><button id="move-right" data-move="right" aria-label="Step right">→</button></div>
-        <div class="walk-footer"><p id="walk-hint">WASD / arrows to move · drag to look · Q/E to turn · Esc to exit</p><span>Drag the view to look around. Heights, finishes and furniture are illustrative.</span></div>
+        <div class="walk-footer"><p id="walk-hint">WASD / arrows to move · drag to look · Q/E to turn · Esc to exit</p><span>Drag to look. Selected finishes, drawing-scale geometry, provisional heights. Confirm dimensions on site.</span></div>
       </div>
       <div class="zoom-tools" aria-label="Plan zoom"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button><span></span><button id="reset-button" aria-label="Fit floor plan to view">↺</button></div>
       <div class="plan-key"><span><i class="key-wall"></i> Walls</span><span><i class="key-window"></i> Windows</span><span><i class="key-terrace"></i> Terrace</span></div>
@@ -42,7 +43,21 @@
     </section>
   </main>
   <footer><span>A1 <span class="footer-divider">/</span> HOME DESIGN JOURNAL</span><span>Personal study · not an official Fira or Kilo Invest site</span></footer>
-  <dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-heading"><span class="eyebrow">PLAN NOTES</span><button id="close-sources" aria-label="Close plan notes">✕</button></div><h2 id="sources-title">Your apartment.<br><em>The published reference.</em></h2><p>This view focuses only on A1 at Helsingin Saarenhelmi, Tihtaalinkatu 5, Helsinki.</p><ul><li><strong>A1 · floor 1 · 71 m² · 3H + KT</strong><p>The official plan shows two bedrooms (MH), living (OH), dining (RT), an open kitchen (KT), bathroom (KPH), walk-in wardrobe (VH), entrance (ET) and a terrace.</p></li><li><a id="brochure-link" target="_blank" rel="noopener noreferrer">Official sales brochure · A1 on page 25 ↗</a><p>Brochure dated 22 December 2025. The room arrangement, entrance and terrace are interpreted from this page. If your PDF viewer does not jump to the page, open page 25 manually.</p></li><li><a id="property-link" target="_blank" rel="noopener noreferrer">Official property website ↗</a><p>Fira Rakennus Oy is the contractor; Kilo Invest Oy is the developer.</p></li></ul><div class="source-warning">This is a simplified redraw, not a dimensioned construction drawing. Wall thickness, openings, furniture and room proportions are approximate. The first-person interior uses an estimated 2.7 m ceiling and 1.62 m eye height. Doors are open passages in the walkthrough; it is not a verified interior or daylight simulation. The 71 m² figure is sourced, not calculated from this model. Bedroom numbers are our labels. Furniture is illustrative, not a supplied furnishing package. Verify dimensions against approved drawings before buying furniture or making changes.</div><p class="rights-note">The original PDF and renderings are linked, not stored or republished in this repository.</p></dialog>
+  <dialog id="sources-dialog" aria-labelledby="sources-title">
+    <div class="dialog-heading"><span class="eyebrow">MEASUREMENT AUDIT</span><button id="close-sources" aria-label="Close plan notes">✕</button></div>
+    <h2 id="sources-title">Documented is not<br><em>the same as measured.</em></h2>
+    <p id="audit-summary"></p>
+    <div class="source-warning"><strong>Do not order fitted furniture from this model.</strong><br>The apartment card (S12 p.3) says dimensions are indicative and may change for construction reasons. The electrical sheet (S13) is valid only for electrical points. Neither is an as-built survey.</div>
+    <div class="confidence-key"><span>Documented design size ≠ installed size</span><span>Scale-derived ≠ dimensioned</span><span>Provisional ≠ confirmed</span></div>
+    <h3>Dimensions stated in the documents</h3><p>Millimetres. These sizes do not verify their location, room clearance or installation tolerances.</p>
+    <div id="documented-dimensions"></div>
+    <h3>What still needs checking</h3><p id="ceiling-note"></p><ul id="confirmation-list"></ul>
+    <h3>Selected finishes</h3><p>From the latest supplied apartment card, matched by the confirmed selection export. Screen colours, textures and product shapes are visual approximations.</p><ul id="finish-list"></ul>
+    <details><summary>All 13 source documents</summary><ul id="document-sources"></ul></details>
+    <p><a id="brochure-link" target="_blank" rel="noopener noreferrer">Public sales brochure · A1 on p.25 ↗</a></p>
+    <p><a id="property-link" target="_blank" rel="noopener noreferrer">Official property website ↗</a></p>
+    <p class="rights-note">Private originals, review images, personal details and prices are not published. The model is for layout discussion, not fabrication, installation or daylight analysis. Floor levels and delivery clearances are not validated.</p>
+  </dialog>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
