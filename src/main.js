@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { property, plan, rooms, walls, windows, doors, terraceOpening, terraceGlass } from './property.js';
 import { createWalkthrough } from './walkthrough.js';
-import { fixedItems } from './interior.js';
+import { fixedItems, upperStorage } from './interior.js';
 import { audit, sources, documentedDimensions, finishes, confirmationNeeded, ceiling } from './specification.js';
 import './audit.css';
 import './studio.css';
@@ -33,7 +33,7 @@ for (const product of shopping) {
   const note = document.createElement('p'); note.textContent = product.note;
   card.append(name, type, finish, size, note);
   if (product.url) {
-    const link = document.createElement('a'); link.href = product.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Find this range at IKEA Finland ↗';
+    const link = document.createElement('a'); link.href = product.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = product.linkLabel || 'Find this range at IKEA Finland ↗';
     card.append(link);
   }
   $('product-list').append(card);
@@ -194,6 +194,14 @@ function addFixtures() {
 }
 
 function addFurniture() {
+  // Dashed overhead outlines keep the worktop and appliances visible below.
+  for (const item of upperStorage) {
+    const [x,z,w,d,,color] = item.box;
+    const geometry = new THREE.BufferGeometry().setFromPoints([[x,z],[x+w,z],[x+w,z+d],[x,z+d],[x,z]].map(([px,pz]) => new THREE.Vector3(px,-pz,.19)));
+    const outline = new THREE.Line(geometry,new THREE.LineDashedMaterial({ color: item.kind === 'glass' ? '#64825a' : '#88745e', dashSize: .055, gapSize: .035 }));
+    outline.computeLineDistances(); furniture.add(outline);
+    rect(x+.015,z+.012,w-.03,.025,color,.195,furniture);
+  }
   const rug = stylingRug;
   rect(rug.x-rug.width/2, rug.z-rug.depth/2, rug.width, rug.depth, '#e8e0d0', .035, furniture);
   for (const item of furnishingLayout) {

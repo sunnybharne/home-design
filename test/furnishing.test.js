@@ -18,7 +18,7 @@ test('IKEA references do not claim live store stock or official geometry', () =>
   assert.equal(new Set(shopping.map(p=>p.id)).size, shopping.length);
   for(const product of shopping) {
     if (product.url) {
-      const url=new URL(product.url);assert.equal(url.hostname,'www.ikea.com');assert.ok(url.pathname.startsWith('/fi/fi/'));
+      const url=new URL(product.url);assert.equal(url.hostname,'www.ikea.com');assert.match(url.pathname,/^\/fi\/(?:fi|en)\//);
     } else {
       assert.match(product.type,/concept/);
       assert.match(product.note,/proposed|Proposed/);

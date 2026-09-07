@@ -24,9 +24,10 @@ npm run build
 - Walk inside opens a full-screen first-person interior.
 - Soft Nordic furniture inspired by IKEA ranges, with Finland shopping links.
 - A proposed 140 × 80 cm breakfast island with two stools and a 120 cm kitchen aisle.
+- Extra 40 cm upper cupboards with two sage glass fronts, warm lights and service gaps.
 - A sofa facing the TV, with an open rug area and no coffee table.
 - Textured wood and linen, rounded furniture, curtains, reflections and contact shadows.
-- Saved living, island, bedroom, studio and YouTube-background views.
+- Saved living, island, upper-cupboard, bedroom, studio and YouTube-background views.
 - Daylight, evening and recording light moods; a 16:9 composition guide.
 - Save a watermarked room view. Smooth rendering mode reduces GPU work.
 - Walk through the rooms and terrace; walls, windows and furniture block movement.
@@ -64,7 +65,7 @@ Read the [measurement audit](docs/measurement-audit.md) and complete the blank [
 
 ## IKEA and visual realism
 
-Read the [Nordic concept](docs/nordic-concept.md). The furniture models and textures are original approximations, not official IKEA assets or photographs. Product dimensions are nominal references; current variants and Vantaa/Espoo stock were not verified. The IKEA links let you check them.
+Read the [Nordic concept](docs/nordic-concept.md). Models and textures are original approximations, not official IKEA assets or photographs. The 40 cm METOD / STENSUND reference size was checked on 7 Sep 2026; other product sizes remain nominal references. The added cupboards are a proposal, not a verified Novart extension. Current stock was not checked.
 
 The studio is a guest-room proposal. Recording views are not calibrated camera, daylight or acoustic simulations. The guest bed is shown closed.
 
@@ -87,6 +88,7 @@ Pushes to `main` run tests, build the app and deploy through `.github/workflows/
 - `src/walkthrough.js`: first-person controls, post-processing, light moods and export.
 - `src/interior-scene.js`: architecture, fixed units, reflections and lighting.
 - `src/styled-furniture.js`, `src/geometry.js`: original furniture and styling geometry.
+- `src/upper-storage.js`: proposed overhead cupboards and display lights.
 - `src/materials.js`: original procedural materials.
 - `src/furnishing-plan.js`: IKEA references, shared furniture layout and camera views.
 - `src/navigation.js`: collision checks.

@@ -9,6 +9,7 @@ import { createMaterials } from './materials.js';
 import { block, cylinder, ellipsoid, rod } from './geometry.js';
 import { createStyledFurniture, curtain } from './styled-furniture.js';
 import { furnishingLayout } from './furnishing-plan.js';
+import { createUpperStorage } from './upper-storage.js';
 
 export function buildInterior(renderer) {
   const scene = new THREE.Scene(), m = createMaterials(renderer);
@@ -142,6 +143,11 @@ export function buildInterior(renderer) {
   rod(scene,[.22,2.1,.77],[.50,2.1,.77],.013,m.black);
   cylinder(scene,.10,.10,.022,[.49,2.095,.77],m.black,32);
   createStyledFurniture(furniture,m);
+  const upper = createUpperStorage(furniture,m);
+  // Grille location is illustrative; the source shows fridge ventilation.
+  const [fx,fz,fw,,fh] = fixedItems.find(item => item.id === 'fridge').box;
+  box(fx+.04,fz-.006,fw-.08,.012,.075,m.black,fh-.11);
+  for (let y=fh-.105;y<fh-.04;y+=.012) box(fx+.045,fz-.014,fw-.09,.009,.004,m.metal,y);
 
   // Soft studio/daylight approximation, not a sun-path or lux calculation.
   const sky=new THREE.HemisphereLight('#edf3ff','#b1a18c',.48);scene.add(sky);
@@ -160,6 +166,7 @@ export function buildInterior(renderer) {
     sun.intensity=evening?0:2.4;sky.intensity=evening?.13:.48;
     windowLights.forEach(l=>{l.intensity=evening?.35:4;l.color.set(evening?'#869cc2':'#e5efff');});
     lamps.forEach(l=>l.intensity=evening?12:recording?5:3);counterLight.intensity=evening?5:2.5;
+    upper.lights.forEach(l=>l.intensity=evening?.9:.45);
     key.intensity=recording?20:evening?6:0;backdrop.intensity=recording||evening?3:1.2;m.glow.emissiveIntensity=evening?2:.7;
     renderer.shadowMap.needsUpdate=true;
   }

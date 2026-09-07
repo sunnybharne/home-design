@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { finishes } from './specification.js';
+import { finishes, upperStorageConcept } from './specification.js';
 
 // Deterministic, original textures. No third-party photos, models or downloads.
 export function random(seed = 73) {
@@ -58,6 +58,7 @@ export function createMaterials(renderer) {
     rug: make('#ebe4d5', 1, { map: pile, bumpMap: pileBump, bumpScale: .015 }),
     mat: make(finishes.terrace.color, 1, { map: pile, bumpMap: pileBump, bumpScale: .008 }),
     kitchen: make(finishes.kitchen.color, .58),
+    upperGreen: make(upperStorageConcept.glassColor, .52),
     backsplash: make(finishes.backsplash.color, .16, { metalness: .06 }),
     alder: make(finishes.bathCeiling.color, .65, { map: grain, bumpMap: woodBump, bumpScale: .002 }),
     worktop: make('#f0eeea', .3, { map: stone, bumpMap: bump(stone), bumpScale: .001 }),

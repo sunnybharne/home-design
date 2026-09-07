@@ -44,6 +44,17 @@ export const ceiling = {
   status: 'Provisional: 3395 mm elevation context, 2800 mm hall/wardrobe, 2350 mm bathroom. Confirm on site.',
 };
 
+// Proposed addition, separate from the owner's confirmed Novart selections.
+export const upperStorageConcept = {
+  id: 'P01', name: 'Upper kitchen storage',
+  height: .40, depth: .389, baseHeight: 2.30,
+  glassColor: '#a7b89e',
+  url: 'https://www.ikea.com/fi/en/p/metod-wall-cabinet-with-glass-door-white-stensund-light-green-s39486411/',
+  reference: 'IKEA METOD / STENSUND 394.864.11: W400 × D389 × H400 mm, checked 7 Sep 2026. No stock check.',
+  status: 'Proposed layout; mounting height, finish match and compatibility with Novart are not verified.',
+  serviceNote: 'No added cupboards above the fridge or extractor. These are provisional service spaces, not verified ventilation clearances.',
+};
+
 export const finishes = {
   wall: { name: 'NCS S 0500-N painter’s white', color: '#f2f1ed', source: 'S12 p.1' },
   floor: { name: 'Shade Oak Cotton White TreS, 3-strip', color: '#e4dfd1', source: 'S12 p.1' },
@@ -62,6 +73,7 @@ export const confirmationNeeded = [
   'Door frame sizes, clear openings, swings, thresholds and furniture delivery route.',
   'Window/reveal positions and sill heights: marketing notes show 700 mm; the electrical background also shows 725 mm.',
   'Final kitchen run, filler/scribe panels, appliance ventilation and manufacturer installation clearances.',
+  'Proposed upper storage: wall fixing, ceiling gap, door opening, Novart compatibility, extractor duct route and fridge ventilation.',
   'Exact cabinet positions/depths where only a scaled plan is available, plus sockets, pipes and skirting.',
   'Final terrace size and level/threshold details; no verified terrace area is supplied.',
 ];

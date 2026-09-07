@@ -1,4 +1,4 @@
-import { finishes } from './specification.js';
+import { finishes, ceiling, upperStorageConcept } from './specification.js';
 import { furnitureFootprints } from './furnishing-plan.js';
 
 // Positions use S01 drawing-scale coordinates. A sourced SIZE does not verify its
@@ -17,6 +17,25 @@ export const fixedItems = [
   { id: 'laundry', kind: 'laundry', box: [0.18, 3.035, 0.6, 0.832, 2.326, '#f1eee5'], source: 'S04; S12 p.11', sizeNote: '800 mm cabinets + two 16 mm sides, 576 mm upper units at 1750 mm. Depth remains scale-derived; tower itself is a placeholder.' },
 ];
 export const fixtures = fixedItems.map((item) => item.box);
+
+// Overhead proposal: its footprint is contained above the existing kitchen base.
+// Keep it separate from floor collision boxes and confirmed fixed units.
+const kitchen = fixedItems.find(item => item.id === 'kitchen-base').box;
+const fridge = fixedItems.find(item => item.id === 'fridge').box;
+export const upperStorage = [
+  { id: 'upper-solid-left', offset: 0, width: .4, kind: 'solid' },
+  { id: 'upper-glass-a', offset: 1.0, width: .4, kind: 'glass' },
+  { id: 'upper-glass-b', offset: 1.4, width: .4, kind: 'glass' },
+  { id: 'upper-solid-right', offset: 1.8, width: .8, kind: 'solid' },
+].map(item => ({
+  id: item.id, kind: item.kind, baseHeight: upperStorageConcept.baseHeight,
+  box: [kitchen[0]+item.offset, kitchen[1]+kitchen[3]-upperStorageConcept.depth, item.width, upperStorageConcept.depth, upperStorageConcept.height, item.kind === 'glass' ? upperStorageConcept.glassColor : finishes.kitchen.color],
+  source: upperStorageConcept.id,
+}));
+export const kitchenServiceSpaces = [
+  { id: 'extractor', box: [kitchen[0]+.4, kitchen[1], .6, kitchen[3]], baseHeight: 2.278, top: ceiling.main, note: 'Provisional gap over extractor; duct route not supplied.' },
+  { id: 'fridge', box: fridge.slice(0,4), baseHeight: fridge[4], top: ceiling.main, note: 'Grille shown in S05 / S12 p.10; required ventilation space is not verified.' },
+];
 
 // One layout for the floor plan, styled models and navigation.
 export const looseFurniture = furnitureFootprints;

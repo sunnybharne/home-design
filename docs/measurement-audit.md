@@ -80,6 +80,8 @@ Fixed-unit footprints now come from one data file shared by the plan, walkthroug
 
 The total kitchen run is **not certified**: modules, appliance openings and filler/panel notes are not interchangeable with the worktop code. The renderer uses an interpreted housing. Confirm the final supplier installation drawing and appliance ventilation requirements.
 
+The fridge grille shown in S05 / S12 p.10 is now represented, with an illustrative location and size. The extra upper cupboards are proposal P01, separate from the supplied design. Gaps above the fridge and extractor are reserved provisionally; the drawings do not verify these service clearances or the extractor duct route. See the [upper storage concept](nordic-concept.md#upper-storage).
+
 ### Ceiling and window conflicts
 
 The old walkthrough used 2700 mm everywhere. The reviewed drawings contain different values:
