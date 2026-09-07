@@ -37,12 +37,39 @@ test('furniture has one shared layout and conservative collision envelopes', () 
   }
   for(let i=0;i<furnishingLayout.length;i++)for(let j=i+1;j<furnishingLayout.length;j++) assert.ok(!overlap(furnitureBox(furnishingLayout[i]),furnitureBox(furnishingLayout[j])),`${furnishingLayout[i].id} overlaps ${furnishingLayout[j].id}`);
 });
-test('the former island and stool area is clear for walking', () => {
+test('the round table and two side chairs leave the kitchen working aisle clear', () => {
   assert.ok(!furnishingLayout.some(item => ['island','stool'].includes(item.kind)));
   assert.ok(!shopping.some(item => ['island','counter-stool'].includes(item.id)));
-  // Sample the full former footprint, not just the removed objects' centres.
-  for (let x=2.45; x<=3.85; x+=.1) for (let z=3.94; z<=5.24; z+=.1) {
-    assert.ok(canStand(x,z,true), `former island area blocked at ${x}, ${z}`);
+  const table=furnishingLayout.find(item=>item.kind==='roundTable');
+  assert.ok(table, 'round dining table missing');
+  assert.equal(table.product,'owned-round-table');
+  const chairs=furnishingLayout.filter(item=>item.product==='dining-chair-placeholder');
+  assert.equal(chairs.length,2);
+  const tableBox=furnitureBox(table);
+  const kitchen=fixtures.find(box=>box[0]<table.x && box[0]+box[2]>table.x && box[1]>table.z);
+  assert.ok(kitchen, 'kitchen behind table missing');
+  const diningBoxes=[tableBox,...chairs.map(furnitureBox)];
+  const nearestEdge=Math.max(...diningBoxes.map(box=>box[1]+box[3]));
+  assert.ok(kitchen[1]-nearestEdge>=1.20, 'less than 120 cm between dining furniture and kitchen');
+  for (const chair of chairs) {
+    assert.ok(Math.abs(chair.z-table.z)<.01, 'chair intrudes into the kitchen aisle');
+    assert.ok(Math.sin(chair.rotation)*(table.x-chair.x)>0, 'chair faces away from table');
+  }
+});
+test('both dining chairs can pull out 30 cm without hitting modeled furniture or walls', () => {
+  // Nominal chair travel only; this does not model a seated person or certify fit.
+  const table=furnishingLayout.find(item=>item.kind==='roundTable');
+  const chairs=furnishingLayout.filter(item=>item.product==='dining-chair-placeholder');
+  assert.ok(table);assert.equal(chairs.length,2);
+  for (const chair of chairs) {
+    const obstacles=[...fixtures,...barriers,...furnishingLayout.filter(item=>item.id!==chair.id).map(furnitureBox)];
+    for (let step=0;step<=30;step++) {
+      const box=furnitureBox({...chair,x:chair.x+Math.sign(chair.x-table.x)*step/100});
+      assert.ok(!obstacles.some(obstacle=>overlap(box,obstacle)), `${chair.id} blocked during pull-out`);
+      for (const [x,z] of [[box[0],box[1]],[box[0]+box[2],box[1]],[box[0],box[1]+box[3]],[box[0]+box[2],box[1]+box[3]]]) {
+        assert.ok(insidePolygon(x,z,plan.outline), `${chair.id} pulls outside the apartment`);
+      }
+    }
   }
 });
 test('all saved camera views start in clear floor space, not inside furniture or walls', () => {
@@ -81,6 +108,18 @@ test('original styled models have rounded geometry, separate legs, upholstery an
     const box=furnitureBox(item);
     assert.ok(bounds.min.x>=box[0]-.08&&bounds.max.x<=box[0]+box[2]+.08,`${item.id} X envelope`);
     assert.ok(bounds.min.z>=box[1]-.08&&bounds.max.z<=box[1]+box[3]+.08,`${item.id} Z envelope`);
+    if (item.kind==='roundTable') {
+      const radius=box[2]/2,point=new THREE.Vector3();
+      assert.ok(Math.abs(bounds.max.x-bounds.min.x-box[2])<.005, 'table diameter differs from its plan');
+      model.traverse(object=>{
+        if (!object.isMesh) return;
+        const vertices=object.geometry.attributes.position;
+        for (let i=0;i<vertices.count;i++) {
+          point.fromBufferAttribute(vertices,i).applyMatrix4(object.matrixWorld);
+          assert.ok(Math.hypot(point.x-item.x,point.z-item.z)<=radius+.003, 'round table extends beyond its circular footprint');
+        }
+      });
+    }
   }
   assert.ok(meshes>150 && meshes<850,`mesh budget: ${meshes}`);
   assert.ok(rounded>50);assert.ok(triangles<500000,`triangle budget: ${triangles}`);

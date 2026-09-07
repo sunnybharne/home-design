@@ -23,11 +23,11 @@ npm run build
 - A1 only: no building or neighbourhood views.
 - Walk inside opens a full-screen first-person interior.
 - Soft Nordic furniture inspired by IKEA ranges, with Finland shopping links.
-- Open kitchen floor with no island or stools.
+- A provisional 100 cm round dining table with two chairs, representing the owner's existing table.
 - Extra 40 cm upper cupboards with two sage glass fronts, warm lights and service gaps.
 - A sofa closer to the TV, with a modeled 90 cm terrace route and no coffee table.
 - Textured wood and linen, rounded furniture, curtains, reflections and contact shadows.
-- Saved living, upper-cupboard, bedroom, studio and YouTube-background views.
+- Saved living, round-table, upper-cupboard, bedroom, studio and YouTube-background views.
 - Daylight, evening and recording light moods; a 16:9 composition guide.
 - Save a watermarked room view. Smooth rendering mode reduces GPU work.
 - Walk through the rooms and terrace; walls, windows and furniture block movement.

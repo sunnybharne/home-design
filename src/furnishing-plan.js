@@ -5,6 +5,8 @@ const ikea = (query) => `https://www.ikea.com/fi/fi/search/?q=${encodeURICompone
 export const shopping = [
   { id: 'kivik', name: 'KIVIK', type: '3-seat sofa', finish: 'Light beige fabric', size: [2.28, .95, .83], room: 'Living', url: ikea('KIVIK 3 istuttava sohva beige'), note: 'Low arms, generous cushions. Confirm the current cover and exact version.' },
   { id: 'besta', name: 'BESTÅ', type: 'TV bench frame', finish: 'Oak effect / pale fronts', size: [1.80, .40, .38], room: 'Living', url: ikea('BESTÅ TV taso 180 40 38'), note: 'Frame size only. Fronts, legs and fittings change the final envelope.' },
+  { id: 'owned-round-table', name: 'Your round dining table', type: 'Existing table · layout concept', finish: 'Pale wood shown as a placeholder', size: [1.00, 1.00, .74], sizeLabel: 'Ø1000 × 740 mm · provisional diameter × height', room: 'Kitchen / dining', note: 'Stand-in for your existing IKEA table. Proposed 100 cm diameter; exact model, size and finish are not confirmed. No new table purchase is suggested.' },
+  { id: 'dining-chair-placeholder', name: 'Dining chairs · two shown', type: 'Chair layout concept', finish: 'Pale wood shown as a placeholder', size: [.44, .51, .80], room: 'Kitchen / dining', note: 'Two proposed chair positions. Your chair model, dimensions and chair count are not confirmed. The model checks 30 cm pull-out, not occupied seating or real-world fit.' },
   { id: 'upper-glass', name: 'METOD / STENSUND', type: 'Glass wall cabinet reference · two shown', finish: 'Light-green glass fronts / warm display lighting', size: [.40, upperStorageConcept.depth, upperStorageConcept.height], room: 'Kitchen', url: upperStorageConcept.url, linkLabel: 'View the IKEA cabinet reference ↗', note: '40 × 40 cm cabinet, item 394.864.11; dimensions checked 7 Sep 2026. For occasional-use dishes. Beige outer panels and lighting are styling suggestions. Rail and handles are separate; wall fixing and Novart compatibility need confirmation.' },
   { id: 'upper-solid', name: 'Beige upper cupboards', type: 'Custom storage concept', finish: 'Beige fronts to coordinate with the kitchen', size: [.40, upperStorageConcept.depth, upperStorageConcept.height], room: 'Kitchen', note: 'Three proposed 40 cm door bays, beside the two glass cabinets. Mounting height and colour match are not verified. No added cupboards over the fridge or extractor; keep their service routes clear.' },
   { id: 'lisabo-chair', name: 'LISABO', type: 'Desk chair', finish: 'Ash', size: [.44, .51, .80], room: 'Studio', url: ikea('LISABO tuoli saarni'), note: 'One desk chair. Allow pull-out space; try the chair before long editing sessions.' },
@@ -20,7 +22,7 @@ export const shopping = [
 export const concept = {
   name: 'Soft Nordic · a home, and a place to create',
   stock: 'Live stock and prices not checked. Confirm the exact variant and availability at IKEA Vantaa or Espoo.',
-  dimensions: 'The 40 cm METOD / STENSUND cabinet dimensions were checked on 7 Sep 2026. Other IKEA sizes are nominal references, not verified against current product pages. Furniture placement and the upper-cupboard layout are proposals. Models are original approximations, not official IKEA 3D assets.',
+  dimensions: 'The round table and its two chairs are placeholders until their size and model are confirmed. The 40 cm METOD / STENSUND cabinet dimensions were checked on 7 Sep 2026. Other IKEA sizes are nominal references, not verified against current product pages. Furniture placement and the upper-cupboard layout are proposals. Models are original approximations, not official IKEA 3D assets.',
   palette: ['#d8d0c1', '#bd9c74', '#f3f0e8', upperStorageConcept.glassColor, '#343b34'],
 };
 
@@ -30,6 +32,9 @@ export const furnishingLayout = [
   { id: 'main-bed', product: 'malm', kind: 'bed', x: 6.81, z: 1.605, rotation: 0 },
   { id: 'sofa', product: 'kivik', kind: 'sofa', x: 6.68, z: 5.065, rotation: Math.PI },
   { id: 'tv', product: 'besta', kind: 'console', x: 6.45, z: 3.49, rotation: 0 },
+  { id: 'round-dining-table', product: 'owned-round-table', kind: 'roundTable', x: 3.15, z: 4.65, rotation: 0 },
+  { id: 'dining-chair-left', product: 'dining-chair-placeholder', kind: 'chair', x: 2.38, z: 4.65, rotation: Math.PI/2 },
+  { id: 'dining-chair-right', product: 'dining-chair-placeholder', kind: 'chair', x: 3.92, z: 4.65, rotation: -Math.PI/2 },
   { id: 'guest-bed', product: 'hemnes', kind: 'daybed', x: 4.61, z: 9.72, rotation: Math.PI },
   { id: 'studio-desk', product: 'desk', kind: 'desk', x: 4.15, z: 7.60, rotation: 0 },
   { id: 'studio-chair', product: 'lisabo-chair', kind: 'chair', x: 4.15, z: 8.23, rotation: Math.PI },
@@ -54,6 +59,7 @@ export function recordingRect(width, height) {
 export const cameraViews = {
   entrance: { name: 'Entrance', x: 1.27, z: 9.55, eye: 1.62, target: [1.27, 1.62, 5], fov: 55 },
   living: { name: 'Living room', x: 3.85, z: 4.05, eye: 1.60, target: [6.65, 1.0, 5.0], fov: 55 },
+  dining: { name: 'Round dining table', x: 5.0, z: 6.0, eye: 1.60, target: [3.15, .8, 4.65], fov: 55 },
   upper: { name: 'Upper kitchen cupboards', x: 4.65, z: 3.85, eye: 1.65, target: [3.60, 1.95, 6.92], fov: 58 },
   bedroom: { name: 'Bedroom', x: 4.72, z: 2.69, eye: 1.60, target: [6.9, .8, 1.35], fov: 55 },
   studio: { name: 'Studio / guest room', x: 2.98, z: 8.71, eye: 1.60, target: [4.5, 1.0, 8.7], fov: 58 },

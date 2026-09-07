@@ -29,7 +29,7 @@ for (const product of shopping) {
   const name = document.createElement('h3'); name.textContent = product.name;
   const type = document.createElement('p'); type.textContent = `${product.type} · ${product.room}`;
   const finish = document.createElement('p'); finish.textContent = product.finish;
-  const size = document.createElement('small'); size.textContent = product.size ? `${product.size.map(v => Math.round(v * 1000)).join(' × ')} mm · ${product.url ? 'nominal' : 'proposed'} W × D × H` : 'Confirm size and installation details on site';
+  const size = document.createElement('small'); size.textContent = product.sizeLabel || (product.size ? `${product.size.map(v => Math.round(v * 1000)).join(' × ')} mm · ${product.url ? 'nominal' : 'proposed'} W × D × H` : 'Confirm size and installation details on site');
   const note = document.createElement('p'); note.textContent = product.note;
   card.append(name, type, finish, size, note);
   if (product.url) {
@@ -206,8 +206,8 @@ function addFurniture() {
   rect(rug.x-rug.width/2, rug.z-rug.depth/2, rug.width, rug.depth, '#e8e0d0', .035, furniture);
   for (const item of furnishingLayout) {
     const group = new THREE.Group(); group.position.set(item.x, -item.z, 0); group.rotation.z = item.rotation; furniture.add(group);
-    const [w, d] = productFor(item).size, wood = ['coffee', 'table', 'chair', 'console', 'bookcase'].includes(item.kind);
-    if (['coffee','side'].includes(item.kind)) circle(0, 0, w/2, item.kind === 'side' ? '#eee9de' : '#c9ae86', .1, group, '#a38d6e');
+    const [w, d] = productFor(item).size, wood = ['coffee', 'roundTable', 'chair', 'console', 'bookcase'].includes(item.kind);
+    if (['coffee','side','roundTable'].includes(item.kind)) circle(0, 0, w/2, item.kind === 'side' ? '#eee9de' : '#c9ae86', .1, group, '#a38d6e');
     else rect(-w/2, -d/2, w, d, wood ? '#d6c2a0' : '#e5decf', .1, group, '#aea38e');
     if (item.kind === 'sofa') {
       for (const x of [-w/2+.12, w/2-.12]) rect(x-.12, -d/2, .24, d, '#c5bba8', .12, group);

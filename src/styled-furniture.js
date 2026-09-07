@@ -36,13 +36,15 @@ function chair(g, [w, d, h], m) {
   for (const x of [-.17, .17]) rod(g, [x, .3, -.17], [x, h-.06, -.22], .019, m.lightOak);
   const back = block(g, [w-.015, .18, .026], [0, h-.10, -.215], m.lightOak, .038); back.rotation.x = -.12;
 }
-function table(g, [w, d, h], m) {
-  legs(g, w, d, h-.04, m.lightOak, .09);
-  block(g, [w, .04, d], [0, h-.02, 0], m.lightOak, .065);
-  block(g, [w-.17, .085, .025], [0, h-.075, -d/2+.075], m.lightOak);
-  vase(g, [.35, h, 0], .22, m.ceramic);
-  for (let i=0; i<4; i++) rod(g, [.35, h+.16, 0], [.36+Math.sin(i*2)*.10, h+.39+i*.02, Math.cos(i*2)*.07], .002, m.walnut);
-  cylinder(g, .10, .10, .012, [-.34, h+.006, .05], m.white, 40);
+function roundTable(g, [diameter, , h], m) {
+  // Generic preview until the owner's exact table model is confirmed.
+  const radius = diameter/2;
+  cylinder(g, radius, radius-.006, .03, [0,h-.015,0], m.lightOak, 80);
+  cylinder(g, radius*.68, radius*.64, .065, [0,h-.0625,0], m.lightOak, 64);
+  for (const x of [-1,1]) for (const z of [-1,1]) {
+    rod(g,[x*radius*.58,.025,z*radius*.58],[x*radius*.42,h-.04,z*radius*.42],.024,m.lightOak);
+  }
+  vase(g, [0,h,0], .13, m.ceramic);
 }
 function coffee(g, [w, , h], m) {
   cylinder(g, w/2, w/2, .028, [0, h-.014, 0], m.oak, 64);
@@ -176,7 +178,7 @@ export function paperPendant(parent, x, z, y, m, radius = .25) {
   }
 }
 export function createStyledFurniture(parent, m) {
-  const models = { sofa, chair, table, coffee, bed, daybed, desk, bookcase, console, side };
+  const models = { sofa, chair, roundTable, coffee, bed, daybed, desk, bookcase, console, side };
   for (const item of furnishingLayout) {
     const group = new THREE.Group(); group.name = item.id; group.userData.product = item.product;
     group.position.set(item.x, 0, item.z); group.rotation.y = item.rotation; parent.add(group);

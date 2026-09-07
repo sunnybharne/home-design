@@ -11,7 +11,7 @@ The lower bedroom is proposed as a guest room / YouTube studio. It is still a be
 The app has IKEA Finland references for these ranges:
 
 - Living: KIVIK sofa, BESTÅ TV bench and STOENSE rug. No coffee table.
-- Kitchen: open floor, with no island, stools or dining table.
+- Dining: the owner's existing round IKEA table, shown provisionally at 100 cm diameter with two generic chairs. Model, size, finish and chair count are not confirmed.
 - Upper kitchen storage: two METOD / STENSUND glass cabinet references, with proposed beige cupboards beside them.
 - Upper bedroom: MALM frame for a 160 × 200 cm mattress and two GLADOM bedside tables.
 - Studio: closed HEMNES daybed, LAGKAPTEN / ALEX desk, BILLY bookcase and one LISABO chair.
@@ -29,9 +29,11 @@ The row starts at a proposed 2300 mm and ends at 2700 mm. The existing modeled c
 
 No new cupboard is placed above the fridge or the 600 mm extractor bay. These are provisional service spaces, not verified ventilation clearances. The fridge grille is shown approximately. Confirm the actual ceiling, mounting support, door swing, wiring, duct route, appliance access, and compatibility with the existing Novart kitchen before ordering. No stock check or colour-match claim is made.
 
-## Open kitchen floor
+## Round dining table
 
-The island, both stools and the low pendant above them are removed. The centre stays open for circulation. There is no dining table in this layout.
+The island, stools and low pendant are removed. A round table at centre (3.15, 4.65) represents the owner's existing IKEA table. Its 100 cm diameter, 74 cm height, pale wood finish and two chairs are explicit placeholders until the owner confirms the actual set. This is not an identified IKEA SKU or a new purchase suggestion.
+
+Chairs sit on the left and right, leaving the kitchen-facing edge open. The model leaves 129 cm from the table edge to the kitchen front and preserves the sampled 90 cm terrace route. Tests check the shown chairs through 30 cm of outward pull. Occupied chairs, actual chair sizes and appliance openings still need checking. Navigation uses a conservative square around the circular tabletop.
 
 ## Terrace access
 
@@ -68,6 +70,6 @@ Rugs and curtains may reduce some room reflections, but do not soundproof the ap
 - Chairs are tucked in and the daybed is closed. Opening/pull-out and delivery clearances are not validated.
 - Core furniture footprints are shared by the plan, models and navigation. Small decorative overhangs are simplified.
 - Tests cover product references, mesh validity/budget, furniture overlap, camera positions, recording crop and room reachability.
-- The floor plan, living and upper-cupboard views were checked in the browser. Upper storage was checked in daylight and evening moods. Export and full mobile interaction checks remain open.
+- The floor plan, living, round-table and upper-cupboard views were checked in the browser. Upper storage was checked in daylight and evening moods. Export and full mobile interaction checks remain open.
 
 Read [measurement limits](measurement-audit.md) before furniture orders or fitted changes.
