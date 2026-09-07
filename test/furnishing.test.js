@@ -4,7 +4,6 @@ import { readFileSync } from 'node:fs';
 import * as THREE from 'three';
 import { shopping, concept, furnishingLayout, furnitureBox, furnitureFootprints, cameraViews, recordingRect } from '../src/furnishing-plan.js';
 import { fixtures, barriers, looseFurniture, canStand, insidePolygon } from '../src/navigation.js';
-import { fixedItems } from '../src/interior.js';
 import { plan } from '../src/property.js';
 import { createStyledFurniture } from '../src/styled-furniture.js';
 
@@ -38,19 +37,13 @@ test('furniture has one shared layout and conservative collision envelopes', () 
   }
   for(let i=0;i<furnishingLayout.length;i++)for(let j=i+1;j<furnishingLayout.length;j++) assert.ok(!overlap(furnitureBox(furnishingLayout[i]),furnitureBox(furnishingLayout[j])),`${furnishingLayout[i].id} overlaps ${furnishingLayout[j].id}`);
 });
-test('island leaves a 120 cm working aisle with seating on the other side', () => {
-  const island = furnishingLayout.find(item => item.kind === 'island');
-  const [x,z,w,d] = furnitureBox(island);
-  const kitchen = fixedItems.find(item => item.id === 'kitchen-base').box;
-  assert.ok(kitchen[1]-(z+d) >= 1.2-1e-9);
-  const stools = furnishingLayout.filter(item => item.kind === 'stool');
-  assert.equal(stools.length,2);
-  for (const stool of stools) {
-    const [sx,sz,sw,sd] = furnitureBox(stool);
-    assert.ok(sz+sd <= z+1e-9, 'stool must stay out of kitchen working aisle');
-    assert.ok(sx >= x && sx+sw <= x+w, 'seat must align with island knee space');
+test('the former island and stool area is clear for walking', () => {
+  assert.ok(!furnishingLayout.some(item => ['island','stool'].includes(item.kind)));
+  assert.ok(!shopping.some(item => ['island','counter-stool'].includes(item.id)));
+  // Sample the full former footprint, not just the removed objects' centres.
+  for (let x=2.45; x<=3.85; x+=.1) for (let z=3.94; z<=5.24; z+=.1) {
+    assert.ok(canStand(x,z,true), `former island area blocked at ${x}, ${z}`);
   }
-  assert.ok(!furnishingLayout.some(item => item.id.startsWith('dining')));
 });
 test('all saved camera views start in clear floor space, not inside furniture or walls', () => {
   for(const [id,view] of Object.entries(cameraViews)) {

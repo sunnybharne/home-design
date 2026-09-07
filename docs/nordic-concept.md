@@ -11,7 +11,7 @@ The lower bedroom is proposed as a guest room / YouTube studio. It is still a be
 The app has IKEA Finland references for these ranges:
 
 - Living: KIVIK sofa, BESTÅ TV bench and STOENSE rug. No coffee table.
-- Kitchen: a custom 140 × 80 × 90 cm island and two generic 65 cm counter stools. These are proposed sizes, not IKEA products.
+- Kitchen: open floor, with no island, stools or dining table.
 - Upper kitchen storage: two METOD / STENSUND glass cabinet references, with proposed beige cupboards beside them.
 - Upper bedroom: MALM frame for a 160 × 200 cm mattress and two GLADOM bedside tables.
 - Studio: closed HEMNES daybed, LAGKAPTEN / ALEX desk, BILLY bookcase and one LISABO chair.
@@ -29,15 +29,15 @@ The row starts at a proposed 2300 mm and ends at 2700 mm. The existing modeled c
 
 No new cupboard is placed above the fridge or the 600 mm extractor bay. These are provisional service spaces, not verified ventilation clearances. The fridge grille is shown approximately. Confirm the actual ceiling, mounting support, door swing, wiring, duct route, appliance access, and compatibility with the existing Novart kitchen before ordering. No stock check or colour-match claim is made.
 
-## Island layout
+## Open kitchen floor
 
-The island replaces the table and four dining chairs. It runs parallel to the kitchen, with a 120 cm model aisle. Storage faces the kitchen; a 30 cm knee recess and two stools face the opposite wall. About 69 cm remains behind the shown stools before pull-out or seated-body allowance. Use the island ends for circulation.
-
-This is a preparation, storage and breakfast concept. Check the actual room, appliance doors, stool use and worktop support before ordering. The island and stools are original generic models. The 120 cm aisle follows [IKEA Finland's planning guide, p.9](https://www.ikea.com/fi/fi/files/pdf/c8/ad/c8ad3d14/kitchen_planning_guide-fy22-april-fi-lr.pdf).
+The island, both stools and the low pendant above them are removed. The centre stays open for circulation. There is no dining table in this layout.
 
 ## Terrace access
 
-The sofa and TV return to their earlier positions, with the coffee table removed. The centre of the rug is open. The model leaves about 60 cm behind the sofa and 57 cm at its window-side end, so terrace access is narrow. Tests check the small walkthrough avatar and the drawn door swing; this layout does not retain the previous 90 cm route. Check actual passage space on site.
+The sofa moves 90 cm toward the TV without rotating. Its front is about 90 cm from the TV bench; about 150 cm remains behind the sofa. The rug moves with the seating area and there is no coffee table.
+
+The terrace route goes around the kitchen-side end of the sofa. The narrowest model gap is about 91 cm diagonally between the fridge and sofa corners. Tests check a continuous 90 cm route and the drawn door swing. The window-side gap remains about 57 cm and is not the intended route. These are drawing-scale checks, not surveyed clearances or an accessibility certification. Confirm the actual passage and appliance openings on site.
 
 Except for the checked upper glass cabinet reference, dimensions in `src/furnishing-plan.js` are nominal model references. BESTÅ uses the frame reference; fronts affect depth. The daybed is modeled closed. Curtain drop, fullness and hanging hardware need a site check. Try a proper task chair if you edit for long hours.
 
@@ -68,6 +68,6 @@ Rugs and curtains may reduce some room reflections, but do not soundproof the ap
 - Chairs are tucked in and the daybed is closed. Opening/pull-out and delivery clearances are not validated.
 - Core furniture footprints are shared by the plan, models and navigation. Small decorative overhangs are simplified.
 - Tests cover product references, mesh validity/budget, furniture overlap, camera positions, recording crop and room reachability.
-- The floor plan, living, island and upper-cupboard views were checked in the browser. Upper storage was checked in daylight and evening moods. Export and full mobile interaction checks remain open.
+- The floor plan, living and upper-cupboard views were checked in the browser. Upper storage was checked in daylight and evening moods. Export and full mobile interaction checks remain open.
 
 Read [measurement limits](measurement-audit.md) before furniture orders or fitted changes.

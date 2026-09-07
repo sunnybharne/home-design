@@ -44,31 +44,6 @@ function table(g, [w, d, h], m) {
   for (let i=0; i<4; i++) rod(g, [.35, h+.16, 0], [.36+Math.sin(i*2)*.10, h+.39+i*.02, Math.cos(i*2)*.07], .002, m.walnut);
   cylinder(g, .10, .10, .012, [-.34, h+.006, .05], m.white, 40);
 }
-function island(g, [w, d, h], m) {
-  const knee = .30, bodyDepth = d-knee;
-  block(g, [w-.08, .12, bodyDepth-.06], [0, .06, knee/2], m.black, .004);
-  block(g, [w-.04, h-.16, bodyDepth-.02], [0, .12+(h-.16)/2, knee/2], m.kitchen, .008);
-  // Full-depth end panels support the top beside the two knee spaces.
-  for (const x of [-w/2+.018,w/2-.018]) block(g,[.036,h-.04,d-.02],[x,(h-.04)/2,0],m.kitchen,.004);
-  block(g, [w,.04,d], [0,h-.02,0], m.lightOak,.018);
-  for (const x of [-w/4,w/4]) {
-    for (const [y,height] of [[.71,.25],[.37,.40]]) {
-      block(g,[w/2-.05,height,.016],[x,y,d/2-.008],m.kitchen,.003);
-      block(g,[w/2-.15,.012,.012],[x,y+height/2-.025,d/2-.004],m.black,.003);
-    }
-  }
-  block(g,[.30,.014,.22],[.40,h+.007,.10],m.oak,.018);
-  cylinder(g,.08,.065,.045,[-.42,h+.023,.13],m.ceramic,32);
-}
-function stool(g, [w, d, h], m) {
-  for (const x of [-1,1]) for (const z of [-1,1]) {
-    rod(g,[x*(w/2-.025),.02,z*(d/2-.025)],[x*(w/2-.07),h-.055,z*(d/2-.07)],.018,m.lightOak);
-  }
-  for (const z of [-d/2+.05,d/2-.05]) rod(g,[-w/2+.045,.25,z],[w/2-.045,.25,z],.014,m.lightOak);
-  for (const x of [-w/2+.045,w/2-.045]) rod(g,[x,.28,-d/2+.05],[x,.28,d/2-.05],.014,m.lightOak);
-  block(g,[w-.025,.025,d-.05],[0,h-.0525,0],m.lightOak,.035);
-  block(g,[w-.04,.04,d-.07],[0,h-.02,0],m.linen,.035);
-}
 function coffee(g, [w, , h], m) {
   cylinder(g, w/2, w/2, .028, [0, h-.014, 0], m.oak, 64);
   cylinder(g, w/2-.055, w/2-.055, .02, [0, .14, 0], m.oak, 64);
@@ -201,7 +176,7 @@ export function paperPendant(parent, x, z, y, m, radius = .25) {
   }
 }
 export function createStyledFurniture(parent, m) {
-  const models = { sofa, chair, table, island, stool, coffee, bed, daybed, desk, bookcase, console, side };
+  const models = { sofa, chair, table, coffee, bed, daybed, desk, bookcase, console, side };
   for (const item of furnishingLayout) {
     const group = new THREE.Group(); group.name = item.id; group.userData.product = item.product;
     group.position.set(item.x, 0, item.z); group.rotation.y = item.rotation; parent.add(group);
@@ -214,8 +189,6 @@ export function createStyledFurniture(parent, m) {
   artwork(parent, 4.61, 1.55, 10.175, .65, .86, m, Math.PI);
   artwork(parent, 5.27, 1.61, 10.175, .40, .55, m, Math.PI);
   artwork(parent, 6.74, 1.75, .485, .75, .93, m);
-  const breakfast = furnishingLayout.find(item => item.kind === 'island');
-  paperPendant(parent, breakfast.x, breakfast.z, 1.95, m, .225);
   paperPendant(parent, 6.55, 4.9, 2.66, m, .225);
   paperPendant(parent, 6.81, 1.5, 2.66, m, .225);
 }

@@ -206,7 +206,7 @@ function addFurniture() {
   rect(rug.x-rug.width/2, rug.z-rug.depth/2, rug.width, rug.depth, '#e8e0d0', .035, furniture);
   for (const item of furnishingLayout) {
     const group = new THREE.Group(); group.position.set(item.x, -item.z, 0); group.rotation.z = item.rotation; furniture.add(group);
-    const [w, d] = productFor(item).size, wood = ['coffee', 'table', 'chair', 'stool', 'island', 'console', 'bookcase'].includes(item.kind);
+    const [w, d] = productFor(item).size, wood = ['coffee', 'table', 'chair', 'console', 'bookcase'].includes(item.kind);
     if (['coffee','side'].includes(item.kind)) circle(0, 0, w/2, item.kind === 'side' ? '#eee9de' : '#c9ae86', .1, group, '#a38d6e');
     else rect(-w/2, -d/2, w, d, wood ? '#d6c2a0' : '#e5decf', .1, group, '#aea38e');
     if (item.kind === 'sofa') {
@@ -222,11 +222,6 @@ function addFurniture() {
     }
     if(item.kind==='desk') rect(-.20,-.20,.48,.29,'#515951',.12,group);
     if(item.kind==='chair') rect(-w/2,-d/2,w,.05,'#b79f7d',.12,group);
-    if(item.kind==='island') {
-      line([[-w/2,-d/2+.30],[w/2,-d/2+.30]], '#b79f7d', .12, group);
-      line([[0,-d/2+.30],[0,d/2]], '#b79f7d', .12, group);
-    }
-    if(item.kind==='stool') rect(-w/2+.025,-d/2+.045,w-.05,d-.09,'#eee8dc',.12,group);
   }
 }
 

@@ -1,19 +1,27 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { furnishingLayout, furnitureBox } from '../src/furnishing-plan.js';
-import { barriers, fixtures, insidePolygon, touchesBox, PLAYER_RADIUS } from '../src/navigation.js';
+import { barriers, fixtures, insidePolygon, touchesBox } from '../src/navigation.js';
+import { fixedItems } from '../src/interior.js';
 import { plan, doors } from '../src/property.js';
 
 const boxes = furnishingLayout.map(furnitureBox);
 const terraceDoor = doors.at(-1);
 
-test('the walkthrough avatar can reach the terrace through the empty centre and around the sofa', () => {
-  // Avatar clearance only; the original sofa leaves tighter real-world passages.
+test('a 90 cm route reaches the terrace around the kitchen-side end of the sofa', () => {
+  // Drawing-scale clearance, not an as-built passage or accessibility claim.
   // The extra 5 mm covers movement between adjacent 10 mm samples.
-  const radius = PLAYER_RADIUS + .005;
+  const radius = .45 + .005;
   const openLeaf = [terraceDoor.x-.02, terraceDoor.y, .04, terraceDoor.radius];
   const obstacles = [...barriers, ...fixtures, ...boxes, openLeaf];
-  const route = [[3.1,5.84], [4.8,5.84], [4.8,4.8], [8.1,4.8], [8.1,6.7], [7.7,6.7], [7.7,8.3]];
+  const fridge = fixedItems.find(item => item.id === 'fridge').box;
+  const sofa = furnitureBox(furnishingLayout.find(item => item.id === 'sofa'));
+  const fridgeCorner = [fridge[0]+fridge[2], fridge[1]];
+  const sofaCorner = [sofa[0], sofa[1]+sofa[3]];
+  // The diagonal between these corners is the narrowest approach to the rear aisle.
+  const midpoint = fridgeCorner.map((value, i) => (value+sofaCorner[i])/2);
+  const route = [[3.1,5.84], [fridgeCorner[0],fridgeCorner[1]-radius-.003], midpoint,
+    [sofaCorner[0],sofaCorner[1]+radius+.005], [7.7,6.13], [7.7,8.3]];
   for (let leg=1; leg<route.length; leg++) {
     const [ax,az] = route[leg-1], [bx,bz] = route[leg];
     const samples = Math.ceil(Math.hypot(bx-ax,bz-az)/.01);
