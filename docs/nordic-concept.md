@@ -10,7 +10,7 @@ The lower bedroom is proposed as a guest room / YouTube studio. It is still a be
 
 The app has IKEA Finland search links for these ranges:
 
-- Living: KIVIK sofa, LISTERBY coffee table, BESTÅ TV bench and STOENSE rug.
+- Living: KIVIK sofa, BESTÅ TV bench and STOENSE rug. No coffee table.
 - Kitchen: a custom 140 × 80 × 90 cm island and two generic 65 cm counter stools. These are proposed sizes, not IKEA products.
 - Upper bedroom: MALM frame for a 160 × 200 cm mattress and two GLADOM bedside tables.
 - Studio: closed HEMNES daybed, LAGKAPTEN / ALEX desk, BILLY bookcase and one LISABO chair.
@@ -26,7 +26,7 @@ This is a preparation, storage and breakfast concept. Check the actual room, app
 
 ## Terrace access
 
-The sofa now sits along the window side and faces a freestanding TV bench. The coffee table and rug turn with it. The model leaves 136 cm between the sofa end and terrace wall, and 100 cm between the TV bench end and fridge front. A separate test checks a continuous 90 cm route from the kitchen through the open terrace doorway, including the drawn door leaf and swing. These are drawing-scale checks, not accessibility certification. Verify window operation, curtains and TV cable routing on site.
+The sofa and TV return to their earlier positions, with the coffee table removed. The centre of the rug is open. The model leaves about 60 cm behind the sofa and 57 cm at its window-side end, so terrace access is narrow. Tests check the small walkthrough avatar and the drawn door swing; this layout does not retain the previous 90 cm route. Check actual passage space on site.
 
 The dimensions in `src/furnishing-plan.js` are nominal model references, not newly verified catalogue measurements. BESTÅ uses the frame reference; fronts affect depth. The daybed is modeled closed. Curtain drop, fullness and hanging hardware need a site check. Try a proper task chair if you edit for long hours.
 

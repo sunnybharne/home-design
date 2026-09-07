@@ -3,7 +3,6 @@
 const ikea = (query) => `https://www.ikea.com/fi/fi/search/?q=${encodeURIComponent(query)}`;
 export const shopping = [
   { id: 'kivik', name: 'KIVIK', type: '3-seat sofa', finish: 'Light beige fabric', size: [2.28, .95, .83], room: 'Living', url: ikea('KIVIK 3 istuttava sohva beige'), note: 'Low arms, generous cushions. Confirm the current cover and exact version.' },
-  { id: 'listerby', name: 'LISTERBY', type: 'Round coffee table', finish: 'Oak veneer', size: [.90, .90, .37], room: 'Living', url: ikea('LISTERBY sohvapöytä 90 tammi'), note: 'Round edges and a lower shelf keep the seating area light.' },
   { id: 'besta', name: 'BESTÅ', type: 'TV bench frame', finish: 'Oak effect / pale fronts', size: [1.80, .40, .38], room: 'Living', url: ikea('BESTÅ TV taso 180 40 38'), note: 'Frame size only. Fronts, legs and fittings change the final envelope.' },
   { id: 'island', name: 'Breakfast island', type: 'Custom design concept', finish: 'Beige storage / pale oak top', size: [1.40, .80, .90], room: 'Kitchen', note: 'Proposed size, not an IKEA product. Two seats, a 30 cm knee recess and storage facing the kitchen. Check top support, stool use and appliance openings on site.' },
   { id: 'counter-stool', name: 'Oak counter stool', type: 'Generic stool concept', finish: 'Pale oak / linen seat', size: [.40, .50, .65], room: 'Kitchen', note: 'Two stools at a proposed 65 cm seat height. The shown positions leave about 69 cm behind them before pull-out; this is not a clear passage behind seated people.' },
@@ -28,10 +27,8 @@ export const concept = {
 // Rotations are right angles so collision envelopes remain simple and testable.
 export const furnishingLayout = [
   { id: 'main-bed', product: 'malm', kind: 'bed', x: 6.81, z: 1.605, rotation: 0 },
-  // Turn the seating group to leave a continuous route to the terrace.
-  { id: 'sofa', product: 'kivik', kind: 'sofa', x: 7.73, z: 4.54, rotation: -Math.PI / 2 },
-  { id: 'coffee', product: 'listerby', kind: 'coffee', x: 6.47, z: 4.54, rotation: 0 },
-  { id: 'tv', product: 'besta', kind: 'console', x: 5.48, z: 4.54, rotation: Math.PI / 2 },
+  { id: 'sofa', product: 'kivik', kind: 'sofa', x: 6.68, z: 5.965, rotation: Math.PI },
+  { id: 'tv', product: 'besta', kind: 'console', x: 6.45, z: 3.49, rotation: 0 },
   { id: 'island', product: 'island', kind: 'island', x: 3.15, z: 4.84, rotation: 0 },
   ...[2.85, 3.45].map((x, i) => ({ id: `island-stool-${i}`, product: 'counter-stool', kind: 'stool', x, z: 4.19, rotation: 0 })),
   { id: 'guest-bed', product: 'hemnes', kind: 'daybed', x: 4.61, z: 9.72, rotation: Math.PI },
@@ -48,7 +45,7 @@ export function furnitureBox(item) {
   return [item.x - width / 2, item.z - depth / 2, width, depth, h, '#d8d0c1'];
 }
 const rugSize = shopping.find(p => p.id === 'stoense').size;
-export const stylingRug = { x: 6.62, z: 4.54, width: rugSize[0], depth: rugSize[1], height: rugSize[2] };
+export const stylingRug = { x: 6.68, z: 4.87, width: rugSize[1], depth: rugSize[0], height: rugSize[2] };
 export const furnitureFootprints = furnishingLayout.map(furnitureBox);
 
 export function recordingRect(width, height) {
@@ -57,7 +54,7 @@ export function recordingRect(width, height) {
 }
 export const cameraViews = {
   entrance: { name: 'Entrance', x: 1.27, z: 9.55, eye: 1.62, target: [1.27, 1.62, 5], fov: 55 },
-  living: { name: 'Living & terrace', x: 4.70, z: 5.85, eye: 1.60, target: [7.0, 1.0, 5.6], fov: 60 },
+  living: { name: 'Living room', x: 4.46, z: 3.86, eye: 1.60, target: [6.6, 1.0, 5.7], fov: 55 },
   island: { name: 'Kitchen island', x: 4.70, z: 3.65, eye: 1.60, target: [3.15, .85, 4.75], fov: 55 },
   bedroom: { name: 'Bedroom', x: 4.72, z: 2.69, eye: 1.60, target: [6.9, .8, 1.35], fov: 55 },
   studio: { name: 'Studio / guest room', x: 2.98, z: 8.71, eye: 1.60, target: [4.5, 1.0, 8.7], fov: 58 },
