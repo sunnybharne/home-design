@@ -25,8 +25,8 @@
         <div id="concept-palette" aria-label="Linen, oak, chalk, clay and charcoal palette"></div>
         <button id="styled-view-button" class="concept-primary">Explore the styled living room ↗</button>
         <button id="studio-view-button">Preview the YouTube background ↗</button>
-        <button id="products-button">See the IKEA furniture list ↗</button>
-        <p>Original models inspired by IKEA ranges. Check the current variants and Vantaa / Espoo stock.</p>
+        <button id="products-button">See furniture & island details ↗</button>
+        <p>IKEA-inspired furniture with a custom island and two stools. Check sizes and current store stock before buying.</p>
       </section>
       <section class="room-section" aria-labelledby="rooms-heading"><div class="section-heading"><h2 id="rooms-heading">Your spaces</h2><button class="text-button" id="clear-room">Show all</button></div><div class="room-list" id="room-list"></div></section>
       <section class="room-detail" aria-live="polite"><div class="eyebrow" id="detail-code">THE APARTMENT</div><h3 id="detail-title">Room to make it yours.</h3><p id="detail-description">Two bedrooms, an open living / dining / kitchen area, a bathroom, a walk-in wardrobe and a private terrace.</p></section>
@@ -41,13 +41,13 @@
       <div id="walk-overlay" hidden>
         <div class="walk-top"><div><span class="eyebrow">INSIDE A1 · NOT FOR FURNITURE ORDERS</span><h2 id="walk-room" aria-live="polite">Entrance / hallway</h2></div><button id="exit-walk-button">✕ Back to plan</button></div>
         <div class="walk-toolbar">
-          <label>Room view<select id="walk-view"><option value="entrance">Entrance</option><option value="living">Living & dining</option><option value="bedroom">Bedroom</option><option value="studio">Studio / guest room</option><option value="video">YouTube background</option><option value="free">Free walk</option></select></label>
+          <label>Room view<select id="walk-view"><option value="entrance">Entrance</option><option value="living">Living & terrace route</option><option value="island">Kitchen island</option><option value="bedroom">Bedroom</option><option value="studio">Studio / guest room</option><option value="video">YouTube background</option><option value="free">Free walk</option></select></label>
           <label>Light mood<select id="walk-light"><option value="day">Soft daylight</option><option value="evening">Warm evening</option><option value="recording">Recording lights</option></select></label>
           <label>Rendering<select id="walk-quality"><option value="detail">Detail · contact shadows</option><option value="smooth">Smooth · lighter on GPU</option></select></label>
         </div>
         <div id="record-frame" role="img" aria-label="16 by 9 filming composition guide" hidden><span>16:9 · background study</span></div>
         <div class="walk-crosshair" aria-hidden="true">·</div>
-        <div class="walk-actions"><button id="save-view-button">↓ Save room view</button><button id="walk-products-button">IKEA furniture ↗</button><button id="mouse-look-button">Use mouse look</button><button id="walk-reset-button">↺ Entrance</button></div>
+        <div class="walk-actions"><button id="save-view-button">↓ Save room view</button><button id="walk-products-button">Furniture & island ↗</button><button id="mouse-look-button">Use mouse look</button><button id="walk-reset-button">↺ Entrance</button></div>
         <div class="walk-pad" role="group" aria-label="Walk controls. Hold a direction to move; drag the view to look around."><button id="move-forward" data-move="forward" aria-label="Walk forward">↑</button><button id="move-left" data-move="left" aria-label="Step left">←</button><button id="move-back" data-move="back" aria-label="Walk backward">↓</button><button id="move-right" data-move="right" aria-label="Step right">→</button></div>
         <div class="walk-footer"><p id="walk-hint">WASD / arrows to move · drag to look · Q/E to turn · Esc to exit</p><span>Design concept, not a photograph. Unofficial IKEA approximations. Lighting, colours and room dimensions need real-world checks.</span></div>
       </div>

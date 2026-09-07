@@ -8,6 +8,7 @@ import { ceiling as levels } from './specification.js';
 import { createMaterials } from './materials.js';
 import { block, cylinder, ellipsoid, rod } from './geometry.js';
 import { createStyledFurniture, curtain } from './styled-furniture.js';
+import { furnishingLayout } from './furnishing-plan.js';
 
 export function buildInterior(renderer) {
   const scene = new THREE.Scene(), m = createMaterials(renderer);
@@ -147,7 +148,8 @@ export function buildInterior(renderer) {
   const sun=new THREE.DirectionalLight('#fff0da',2.4);sun.position.set(17,6,5);sun.target.position.set(4,0,5);scene.add(sun,sun.target);
   sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-9;sun.shadow.camera.right=9;sun.shadow.camera.top=9;sun.shadow.camera.bottom=-9;sun.shadow.camera.near=.5;sun.shadow.camera.far=35;sun.shadow.bias=-.00025;sun.shadow.normalBias=.025;sun.shadow.radius=3;
   const lamps=[];
-  for(const [x,z,y] of [[3.05,4.68,1.70],[6.55,4.9,2.6],[6.81,1.5,2.6],[4.15,8.2,2.55],[1.2,6,2.55],[1.2,2.1,2.14]]) {
+  const breakfast = furnishingLayout.find(item => item.kind === 'island');
+  for(const [x,z,y] of [[breakfast.x,breakfast.z,1.85],[6.55,4.9,2.6],[6.81,1.5,2.6],[4.15,8.2,2.55],[1.2,6,2.55],[1.2,2.1,2.14]]) {
     const lamp=new THREE.PointLight('#ffdab0',3,6,2);lamp.position.set(x,y,z);scene.add(lamp);lamps.push(lamp);
   }
   const key=new THREE.SpotLight('#fff2e4',0,7,.8,.8,2);key.position.set(5.5,2.4,8.0);key.target.position.set(3.8,1.3,9.5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.normalBias=.02;scene.add(key,key.target);

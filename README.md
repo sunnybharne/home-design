@@ -23,8 +23,10 @@ npm run build
 - A1 only: no building or neighbourhood views.
 - Walk inside opens a full-screen first-person interior.
 - Soft Nordic furniture inspired by IKEA ranges, with Finland shopping links.
+- A proposed 140 × 80 cm breakfast island with two stools and a 120 cm kitchen aisle.
+- A rotated living arrangement with a clear model route to the terrace.
 - Textured wood and linen, rounded furniture, curtains, reflections and contact shadows.
-- Saved living, bedroom, studio and YouTube-background views.
+- Saved living, island, bedroom, studio and YouTube-background views.
 - Daylight, evening and recording light moods; a 16:9 composition guide.
 - Save a watermarked room view. Smooth rendering mode reduces GPU work.
 - Walk through the rooms and terrace; walls, windows and furniture block movement.

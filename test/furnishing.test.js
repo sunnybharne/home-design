@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import * as THREE from 'three';
 import { shopping, concept, furnishingLayout, furnitureBox, furnitureFootprints, cameraViews, recordingRect } from '../src/furnishing-plan.js';
 import { fixtures, barriers, looseFurniture, canStand, insidePolygon } from '../src/navigation.js';
+import { fixedItems } from '../src/interior.js';
 import { plan } from '../src/property.js';
 import { createStyledFurniture } from '../src/styled-furniture.js';
 
@@ -16,11 +17,16 @@ test('IKEA references do not claim live store stock or official geometry', () =>
   assert.match(concept.dimensions, /not official IKEA/);
   assert.equal(new Set(shopping.map(p=>p.id)).size, shopping.length);
   for(const product of shopping) {
-    const url=new URL(product.url);assert.equal(url.hostname,'www.ikea.com');assert.ok(url.pathname.startsWith('/fi/fi/'));
+    if (product.url) {
+      const url=new URL(product.url);assert.equal(url.hostname,'www.ikea.com');assert.ok(url.pathname.startsWith('/fi/fi/'));
+    } else {
+      assert.match(product.type,/concept/);
+      assert.match(product.note,/proposed|Proposed/);
+    }
     assert.ok(product.note);if(product.size)assert.ok(product.size.every(n=>Number.isFinite(n)&&n>0));
   }
 });
-test('catalogue-linked furniture has one shared layout and conservative collision envelopes', () => {
+test('furniture has one shared layout and conservative collision envelopes', () => {
   assert.equal(looseFurniture, furnitureFootprints);
   assert.equal(new Set(furnishingLayout.map(p=>p.id)).size,furnishingLayout.length);
   for(const item of furnishingLayout) {
@@ -31,6 +37,20 @@ test('catalogue-linked furniture has one shared layout and conservative collisio
     assert.ok(![...fixtures,...barriers].some(fixed=>overlap(box,fixed)),`${item.id} overlaps a cabinet, wall or window`);
   }
   for(let i=0;i<furnishingLayout.length;i++)for(let j=i+1;j<furnishingLayout.length;j++) assert.ok(!overlap(furnitureBox(furnishingLayout[i]),furnitureBox(furnishingLayout[j])),`${furnishingLayout[i].id} overlaps ${furnishingLayout[j].id}`);
+});
+test('island leaves a 120 cm working aisle with seating on the other side', () => {
+  const island = furnishingLayout.find(item => item.kind === 'island');
+  const [x,z,w,d] = furnitureBox(island);
+  const kitchen = fixedItems.find(item => item.id === 'kitchen-base').box;
+  assert.ok(kitchen[1]-(z+d) >= 1.2-1e-9);
+  const stools = furnishingLayout.filter(item => item.kind === 'stool');
+  assert.equal(stools.length,2);
+  for (const stool of stools) {
+    const [sx,sz,sw,sd] = furnitureBox(stool);
+    assert.ok(sz+sd <= z+1e-9, 'stool must stay out of kitchen working aisle');
+    assert.ok(sx >= x && sx+sw <= x+w, 'seat must align with island knee space');
+  }
+  assert.ok(!furnishingLayout.some(item => item.id.startsWith('dining')));
 });
 test('all saved camera views start in clear floor space, not inside furniture or walls', () => {
   for(const [id,view] of Object.entries(cameraViews)) {

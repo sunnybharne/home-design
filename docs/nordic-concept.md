@@ -11,12 +11,22 @@ The lower bedroom is proposed as a guest room / YouTube studio. It is still a be
 The app has IKEA Finland search links for these ranges:
 
 - Living: KIVIK sofa, LISTERBY coffee table, BESTÅ TV bench and STOENSE rug.
-- Dining: LISABO table and four chairs.
+- Kitchen: a custom 140 × 80 × 90 cm island and two generic 65 cm counter stools. These are proposed sizes, not IKEA products.
 - Upper bedroom: MALM frame for a 160 × 200 cm mattress and two GLADOM bedside tables.
-- Studio: closed HEMNES daybed, LAGKAPTEN / ALEX desk, BILLY bookcase and a fifth LISABO chair.
+- Studio: closed HEMNES daybed, LAGKAPTEN / ALEX desk, BILLY bookcase and one LISABO chair.
 - Windows: DYTÅG-style linen curtains. Lighting: REGOLIT-style 45 cm paper shades.
 
-**Live catalogue variants, prices and Vantaa/Espoo stock were not verified.** Browser access to IKEA was not approved. Links are searches, not assertions that a particular SKU is available. Recheck dimensions, finishes, package contents and availability before buying.
+**Live catalogue variants, prices and Vantaa/Espoo stock were not verified.** Product links are searches, not assertions that a particular SKU is available. Recheck dimensions, finishes, package contents and availability before buying.
+
+## Island layout
+
+The island replaces the table and four dining chairs. It runs parallel to the kitchen, with a 120 cm model aisle. Storage faces the kitchen; a 30 cm knee recess and two stools face the opposite wall. About 69 cm remains behind the shown stools before pull-out or seated-body allowance. Use the island ends for circulation.
+
+This is a preparation, storage and breakfast concept. Check the actual room, appliance doors, stool use and worktop support before ordering. The island and stools are original generic models. The 120 cm aisle follows [IKEA Finland's planning guide, p.9](https://www.ikea.com/fi/fi/files/pdf/c8/ad/c8ad3d14/kitchen_planning_guide-fy22-april-fi-lr.pdf).
+
+## Terrace access
+
+The sofa now sits along the window side and faces a freestanding TV bench. The coffee table and rug turn with it. The model leaves 136 cm between the sofa end and terrace wall, and 100 cm between the TV bench end and fridge front. A separate test checks a continuous 90 cm route from the kitchen through the open terrace doorway, including the drawn door leaf and swing. These are drawing-scale checks, not accessibility certification. Verify window operation, curtains and TV cable routing on site.
 
 The dimensions in `src/furnishing-plan.js` are nominal model references, not newly verified catalogue measurements. BESTÅ uses the frame reference; fronts affect depth. The daybed is modeled closed. Curtain drop, fullness and hanging hardware need a site check. Try a proper task chair if you edit for long hours.
 
@@ -47,6 +57,6 @@ Rugs and curtains may reduce some room reflections, but do not soundproof the ap
 - Chairs are tucked in and the daybed is closed. Opening/pull-out and delivery clearances are not validated.
 - Core furniture footprints are shared by the plan, models and navigation. Small decorative overhangs are simplified.
 - Tests cover product references, mesh validity/budget, furniture overlap, camera positions, recording crop and room reachability.
-- The floor plan loaded in Chromium. Full walkthrough, lighting, export and mobile interaction checks still need browser approval.
+- The updated floor plan, living view and island view were checked in the browser. Export and full mobile interaction checks remain open.
 
 Read [measurement limits](measurement-audit.md) before furniture orders or fitted changes.

@@ -29,10 +29,14 @@ for (const product of shopping) {
   const name = document.createElement('h3'); name.textContent = product.name;
   const type = document.createElement('p'); type.textContent = `${product.type} · ${product.room}`;
   const finish = document.createElement('p'); finish.textContent = product.finish;
-  const size = document.createElement('small'); size.textContent = product.size ? `${product.size.map(v => Math.round(v * 1000)).join(' × ')} mm · nominal W × D × H` : 'Confirm size and installation details on site';
+  const size = document.createElement('small'); size.textContent = product.size ? `${product.size.map(v => Math.round(v * 1000)).join(' × ')} mm · ${product.url ? 'nominal' : 'proposed'} W × D × H` : 'Confirm size and installation details on site';
   const note = document.createElement('p'); note.textContent = product.note;
-  const link = document.createElement('a'); link.href = product.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Find this range at IKEA Finland ↗';
-  card.append(name, type, finish, size, note, link); $('product-list').append(card);
+  card.append(name, type, finish, size, note);
+  if (product.url) {
+    const link = document.createElement('a'); link.href = product.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Find this range at IKEA Finland ↗';
+    card.append(link);
+  }
+  $('product-list').append(card);
 }
 for (const color of concept.palette) { const swatch = document.createElement('i'); swatch.style.background = color; $('concept-palette').append(swatch); }
 productsDialog.addEventListener('click', (event) => {
@@ -194,7 +198,7 @@ function addFurniture() {
   rect(rug.x-rug.width/2, rug.z-rug.depth/2, rug.width, rug.depth, '#e8e0d0', .035, furniture);
   for (const item of furnishingLayout) {
     const group = new THREE.Group(); group.position.set(item.x, -item.z, 0); group.rotation.z = item.rotation; furniture.add(group);
-    const [w, d] = productFor(item).size, wood = ['coffee', 'table', 'chair', 'console', 'bookcase'].includes(item.kind);
+    const [w, d] = productFor(item).size, wood = ['coffee', 'table', 'chair', 'stool', 'island', 'console', 'bookcase'].includes(item.kind);
     if (['coffee','side'].includes(item.kind)) circle(0, 0, w/2, item.kind === 'side' ? '#eee9de' : '#c9ae86', .1, group, '#a38d6e');
     else rect(-w/2, -d/2, w, d, wood ? '#d6c2a0' : '#e5decf', .1, group, '#aea38e');
     if (item.kind === 'sofa') {
@@ -210,6 +214,11 @@ function addFurniture() {
     }
     if(item.kind==='desk') rect(-.20,-.20,.48,.29,'#515951',.12,group);
     if(item.kind==='chair') rect(-w/2,-d/2,w,.05,'#b79f7d',.12,group);
+    if(item.kind==='island') {
+      line([[-w/2,-d/2+.30],[w/2,-d/2+.30]], '#b79f7d', .12, group);
+      line([[0,-d/2+.30],[0,d/2]], '#b79f7d', .12, group);
+    }
+    if(item.kind==='stool') rect(-w/2+.025,-d/2+.045,w-.05,d-.09,'#eee8dc',.12,group);
   }
 }
 
