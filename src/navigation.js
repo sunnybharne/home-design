@@ -47,10 +47,11 @@ export function movePlayer(position, dx, dz, furnished = true) {
   const distance = Math.hypot(dx, dz);
   if (!Number.isFinite(distance) || distance > 100) return { ...position };
   const steps = Math.max(1, Math.ceil(distance / 0.06));
+  const stepX = dx / steps, stepZ = dz / steps;
   let { x, z } = position;
   for (let i = 0; i < steps; i++) {
-    if (canStand(x + dx / steps, z, furnished)) x += dx / steps;
-    if (canStand(x, z + dz / steps, furnished)) z += dz / steps;
+    if (canStand(x + stepX, z, furnished)) x += stepX;
+    if (canStand(x, z + stepZ, furnished)) z += stepZ;
   }
   return { x, z };
 }
